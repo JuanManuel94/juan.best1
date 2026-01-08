@@ -1,0 +1,225 @@
+/* Main Container with Blurred/Aurora Background */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: calc(100vh - 70px);
+    /* Account for navbar height */
+    background: radial-gradient(at top left, #1e3a8a, transparent),
+        radial-gradient(at bottom right, #ea580c, transparent),
+        radial-gradient(at center, #4c1d95, #0f172a);
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Optional overlay to soften the gradients */
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(20px);
+    z-index: 0;
+}
+
+.login-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+/* Logo Section */
+.logo-section {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.app-logo {
+    width: 150px;
+    /* Adjust based on actual logo aspect ratio */
+    height: auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Avatar Section */
+.avatar-section {
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.avatar-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background-color: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.avatar-icon {
+    width: 60px;
+    height: 60px;
+    color: #e2e8f0;
+}
+
+.avatar-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Form Styling */
+.login-form {
+    width: 100%;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: rgba(226, 232, 240, 0.85);
+    /* Semi-transparent light gray */
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
+    padding: 0 1rem;
+    height: 50px;
+    transition: all 0.2s;
+}
+
+.input-group:focus-within {
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.input-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    color: #334155;
+}
+
+.input-icon-filled {
+    width: 24px;
+    height: 24px;
+}
+
+.input-group input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    color: #1e293b;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: #64748b;
+}
+
+/* Form Options (Checkbox & Forgot Password) */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-container input {
+    margin-right: 0.5rem;
+    cursor: pointer;
+    accent-color: #3b82f6;
+    /* Blue check */
+}
+
+.forgot-password {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    color: #fff;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    background-color: #1f2937;
+    /* Dark gray similar to reference */
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    padding: 1rem;
+    border-radius: 4px;
+    /* Slight rounding but mostly sharp like reference */
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.login-btn:hover:not(:disabled) {
+    background-color: #374151;
+}
+
+.login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Error Message */
+.error-message {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    text-align: center;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-content {
+    animation: fadeIn 0.6s ease-out;
+}
