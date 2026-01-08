@@ -1,0 +1,229 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content" style="background: #d9e0e7;">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Gestión de Red</li>
+                            <li class="breadcrumb-item active">Tráfico</li>
+                        </ol>
+                        <h1 class="page-header">Monitor de Tráfico <small>consumo de ancho de banda por cliente</small>
+                        </h1>
+
+                        <!-- Panel MikroWISP Style -->
+                        <div class="mw-panel">
+                            <!-- Tabs -->
+                            <div class="mw-tabs" style="background: #f8f9fa; border-bottom: none;">
+                                <button class="mw-tab active" data-tab="lista"
+                                    style="background: #348fe2; color: #fff; border-radius: 4px 4px 0 0;">
+                                    <i class="fa fa-list"></i> LISTA TRÁFICO
+                                </button>
+                                <button class="mw-tab" data-tab="graficos">
+                                    <i class="fa fa-chart-bar"></i> GRÁFICOS
+                                </button>
+                            </div>
+
+                            <div class="mw-panel-body-white">
+                                <!-- Tab Content: Lista -->
+                                <div class="tab-content-mw" id="tab-lista">
+                                    <!-- Filters -->
+                                    <div class="mw-filters">
+                                        <div class="mw-filter-group">
+                                            <label>Router:</label>
+                                            <select id="filterRouter">
+                                                <option>Cualquiera</option>
+                                                <option>Router Principal</option>
+                                                <option>Router Demo</option>
+                                            </select>
+                                        </div>
+                                        <div class="mw-filter-group">
+                                            <label>Ubicación:</label>
+                                            <select id="filterLocation">
+                                                <option>cualquiera</option>
+                                            </select>
+                                        </div>
+                                        <div class="mw-filter-group">
+                                            <label>Emisor:</label>
+                                            <select id="filterEmisor">
+                                                <option>Cualquiera</option>
+                                            </select>
+                                        </div>
+                                        <div class="mw-filter-group">
+                                            <label>Plan:</label>
+                                            <select id="filterPlan">
+                                                <option>Cualquiera</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Toolbar -->
+                                    <div class="mw-toolbar">
+                                        <div class="mw-toolbar-left">
+                                            <div class="mw-page-size">
+                                                <select id="pageSize">
+                                                    <option value="15">15</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                                <button class="btn-list"><i class="fa fa-list"></i></button>
+                                            </div>
+                                            <div class="mw-date-range">
+                                                <input type="date" id="dateFrom" value="2026-01-01">
+                                                <span>al</span>
+                                                <input type="date" id="dateTo" value="2026-01-31">
+                                            </div>
+                                        </div>
+                                        <div class="mw-toolbar-right">
+                                            <div class="mw-search">
+                                                <input type="text" id="searchTraffic" placeholder="Buscar..."
+                                                    onkeyup="searchTraffic()">
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Table -->
+                                    <div class="mw-table-container">
+                                        <table class="mw-table" id="tableTraffic">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%" class="sortable"># <i
+                                                            class="fa fa-sort-down sort-icon"></i></th>
+                                                    <th class="sortable">CLIENTE <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">IP <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">DESCARGA <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">SUBIDA <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">USER PPP/HS <i
+                                                            class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">FECHA <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">TIEMPO <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">MAC <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">ROUTER <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th width="5%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="trafficBody">
+                                                <!-- Data will be loaded via JavaScript -->
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Pagination -->
+                                        <div class="mw-pagination">
+                                            <span class="mw-pagination-info">
+                                                Mostrando de <a href="#">1</a> al <a href="#">15</a> de un total de
+                                                <span id="totalTraffic">0</span>
+                                            </span>
+                                            <button class="mw-page-btn"><i class="fa fa-chevron-left"></i></button>
+                                            <button class="mw-page-btn active">1</button>
+                                            <button class="mw-page-btn"><i class="fa fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tab Content: Gráficos -->
+                                <div class="tab-content-mw" id="tab-graficos" style="display: none;">
+                                    <div class="text-center py-5">
+                                        <i class="fa fa-chart-area fa-5x text-muted mb-3"></i>
+                                        <p class="text-muted">Gráficos de consumo de tráfico</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Icon -->
+                        <div style="position: fixed; right: 20px; bottom: 20px;">
+                            <button class="mw-settings-icon" style="width: 40px; height: 40px;">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                let trafficData = [];
+
+                $(document).ready(function () {
+                    loadTraffic();
+
+                    // Tab switching
+                    $('.mw-tab').on('click', function () {
+                        $('.mw-tab').removeClass('active').css({ 'background': '', 'color': '' });
+                        $(this).addClass('active').css({ 'background': '#348fe2', 'color': '#fff' });
+
+                        const tabId = $(this).data('tab');
+                        $('.tab-content-mw').hide();
+                        $('#tab-' + tabId).show();
+                    });
+                });
+
+                function loadTraffic() {
+                    // Demo data matching the screenshot
+                    trafficData = [
+                        { id: 120, client: 'cesar aa', ip: '192.168.33.17', download: '3 GiB', upload: '578.5 MiB', user: '', date: '02/01/2026', time: '11:45:00', mac: '', router: 'Router Demo' },
+                        { id: 119, client: 'cesar aa', ip: '192.168.33.17', download: '2.8 GiB', upload: '441 MiB', user: '', date: '01/01/2026', time: '11:00:00', mac: '', router: 'Router Demo' },
+                        { id: 118, client: 'AFK INVERSIONES VENEZUELA C.A.', ip: '192.168.33.16', download: '3 GiB', upload: '523.4 MiB', user: '', date: '02/01/2026', time: '12:00:00', mac: '00:00:00:00:00:00', router: 'Router Demo' },
+                        { id: 117, client: 'AFK INVERSIONES VENEZUELA C.A.', ip: '192.168.33.16', download: '2.7 GiB', upload: '486.9 MiB', user: '', date: '01/01/2026', time: '11:15:00', mac: '00:00:00:00:00:00', router: 'Router Demo' },
+                        { id: 116, client: 'juan perez', ip: '192.168.33.15', download: '2.9 GiB', upload: '456.2 MiB', user: '', date: '02/01/2026', time: '11:30:00', mac: '', router: 'Router Demo' },
+                        { id: 115, client: 'juan perez', ip: '192.168.33.15', download: '2.9 GiB', upload: '485.1 MiB', user: '', date: '01/01/2026', time: '11:45:00', mac: '', router: 'Router Demo' },
+                        { id: 114, client: 'omar martinez', ip: '192.168.5.2', download: '2.9 GiB', upload: '436.1 MiB', user: '', date: '02/01/2026', time: '11:45:00', mac: '', router: 'Router Demo' },
+                        { id: 113, client: 'omar martinez', ip: '192.168.5.2', download: '3.3 GiB', upload: '520.5 MiB', user: '', date: '01/01/2026', time: '11:45:00', mac: '', router: 'Router Principal' },
+                        { id: 112, client: 'fa', ip: '190.100.49.3', download: '2.8 GiB', upload: '499.2 MiB', user: '', date: '02/01/2026', time: '11:45:00', mac: '', router: 'Router Principal' },
+                        { id: 111, client: 'fa', ip: '190.100.49.3', download: '2.9 GiB', upload: '491 MiB', user: '', date: '01/01/2026', time: '11:15:00', mac: '', router: 'Router Principal' },
+                        { id: 110, client: 'JOSE JUAQUIN VERAS', ip: '192.168.33.14', download: '3.3 GiB', upload: '471.3 MiB', user: '', date: '02/01/2026', time: '12:00:00', mac: '00:10:28:56:32:01', router: 'Router Demo' },
+                        { id: 109, client: 'JOSE JUAQUIN VERAS', ip: '192.168.33.14', download: '3.3 GiB', upload: '560.2 MiB', user: '', date: '01/01/2026', time: '12:15:00', mac: '00:10:28:56:32:01', router: 'Router Demo' },
+                        { id: 108, client: 'Saul Miranda', ip: '192.168.1.2', download: '2.9 GiB', upload: '539.7 MiB', user: '', date: '02/01/2026', time: '12:00:00', mac: '', router: 'Router Principal' }
+                    ];
+                    renderTraffic(trafficData);
+                }
+
+                function renderTraffic(data) {
+                    const tbody = $('#trafficBody');
+                    tbody.empty();
+
+                    data.forEach(item => {
+                        tbody.append(`
+                            <tr>
+                                <td>${item.id}</td>
+                                <td>${item.client}</td>
+                                <td>${item.ip}</td>
+                                <td>${item.download}</td>
+                                <td>${item.upload}</td>
+                                <td>${item.user || '-'}</td>
+                                <td>${item.date}</td>
+                                <td>${item.time}</td>
+                                <td>${item.mac || '-'}</td>
+                                <td>${item.router}</td>
+                                <td>
+                                    <div class="mw-actions">
+                                        <button class="mw-btn-action view" title="Ver detalles">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+
+                    $('#totalTraffic').text(data.length);
+                }
+
+                function searchTraffic() {
+                    const term = $('#searchTraffic').val().toLowerCase();
+                    const filtered = trafficData.filter(t =>
+                        t.client.toLowerCase().includes(term) ||
+                        t.ip.includes(term)
+                    );
+                    renderTraffic(filtered);
+                }
+            </script>

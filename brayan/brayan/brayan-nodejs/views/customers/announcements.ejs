@@ -1,0 +1,126 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Clientes</li>
+                            <li class="breadcrumb-item active">Anuncios</li>
+                        </ol>
+                        <h1 class="page-header">Anuncios <small>notificaciones masivas</small></h1>
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Anuncios</h4>
+                                <div class="panel-heading-btn">
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#modalAnnouncement">
+                                        <i class="fa fa-plus"></i> Nuevo Anuncio
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="tableAnnouncements" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>TÍTULO</th>
+                                            <th>TIPO</th>
+                                            <th>INICIO</th>
+                                            <th>FIN</th>
+                                            <th>PORTAL</th>
+                                            <th>ESTADO</th>
+                                            <th>ACCIONES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <div class="modal fade" id="modalAnnouncement" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo Anuncio</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form id="formAnnouncement">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Título</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <textarea class="form-control" name="content" rows="4" required></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo</label>
+                                        <select class="form-control" name="type">
+                                            <option value="info">Información</option>
+                                            <option value="warning">Advertencia</option>
+                                            <option value="promo">Promoción</option>
+                                            <option value="maintenance">Mantenimiento</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Fecha Inicio</label>
+                                        <input type="date" class="form-control" name="start_date">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Fecha Fin</label>
+                                        <input type="date" class="form-control" name="end_date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="show_on_portal"
+                                    id="show_on_portal" checked>
+                                <label class="custom-control-label" for="show_on_portal">Mostrar en portal de
+                                    cliente</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Publicar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%- include('../resources/includes/footer') %>
+            <script>
+                $(document).ready(function () {
+                    $('#tableAnnouncements').DataTable({
+                        ajax: { url: '/customers/announcements/list', dataSrc: 'data' },
+                        columns: [
+                            { data: 'id' }, { data: 'title' },
+                            {
+                                data: 'type', render: d => {
+                                    const colors = { info: 'info', warning: 'warning', promo: 'success', maintenance: 'danger' };
+                                    return `<span class="badge badge-${colors[d] || 'secondary'}">${d}</span>`;
+                                }
+                            },
+                            { data: 'start_date', defaultContent: '-' }, { data: 'end_date', defaultContent: '-' },
+                            { data: 'show_on_portal', render: d => d ? '<i class="fa fa-check text-success"></i>' : '-' },
+                            { data: 'state', render: d => d ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-secondary">Inactivo</span>' },
+                            {
+                                data: null, render: d => `
+                        <button class="btn btn-info btn-xs"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                    `}
+                        ],
+                        language: { url: '/public/plugins/datatables/Spanish.json' }
+                    });
+                });
+            </script>

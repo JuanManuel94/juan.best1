@@ -1,0 +1,219 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:;">Almacén</a></li>
+                            <li class="breadcrumb-item active">Categorías</li>
+                        </ol>
+                        <h1 class="page-header">Tipos de Productos <small>categorías</small></h1>
+
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><i class="fa fa-tags mr-2"></i>Categorías de Productos</h4>
+                                <div class="panel-heading-btn">
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#modalCategory">
+                                        <i class="fa fa-plus"></i> Nueva Categoría
+                                    </button>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                                        data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success"
+                                        data-click="panel-reload"><i class="fa fa-redo"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table id="tableCategories" class="table table-striped table-bordered table-hover"
+                                        style="width:100%">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th width="60">ID</th>
+                                                <th>NOMBRE</th>
+                                                <th>DESCRIPCIÓN</th>
+                                                <th width="100">PRODUCTOS</th>
+                                                <th width="120">ACCIONES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Nueva Categoría -->
+                    <div class="modal fade" id="modalCategory" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title"><i class="fa fa-tag mr-2"></i>Nueva Categoría</h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                                </div>
+                                <form id="formCategory">
+                                    <input type="hidden" name="id" id="categoryId">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label><i class="fa fa-font text-muted mr-1"></i> Nombre *</label>
+                                            <input type="text" name="name" class="form-control"
+                                                placeholder="Nombre de la categoría" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fa fa-align-left text-muted mr-1"></i> Descripción</label>
+                                            <textarea name="description" class="form-control" rows="3"
+                                                placeholder="Descripción de la categoría..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fa fa-palette text-muted mr-1"></i> Color
+                                                (opcional)</label>
+                                            <input type="color" name="color" class="form-control form-control-color"
+                                                value="#348fe2" style="width: 60px; height: 38px;">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">
+                                            <i class="fa fa-times"></i> Cancelar
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-save"></i> Guardar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <style>
+                .thead-dark th {
+                    background-color: #2d353c;
+                    color: #fff;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-size: 11px;
+                    letter-spacing: 0.5px;
+                }
+
+                .badge-category {
+                    padding: 6px 12px;
+                    font-size: 12px;
+                }
+            </style>
+
+            <script>
+                $(document).ready(function () {
+                    // Initialize DataTable
+                    var table = $('#tableCategories').DataTable({
+                        ajax: { url: '/warehouse/categories/list', dataSrc: 'data' },
+                        columns: [
+                            { data: 'id' },
+                            {
+                                data: 'name',
+                                render: function (data, type, row) {
+                                    var color = row.color || '#348fe2';
+                                    return '<span class="badge badge-category" style="background-color: ' + color + '; color: #fff;">' +
+                                        '<i class="fa fa-tag mr-1"></i>' + data + '</span>';
+                                }
+                            },
+                            {
+                                data: 'description',
+                                render: function (data) {
+                                    return data || '<span class="text-muted">Sin descripción</span>';
+                                }
+                            },
+                            {
+                                data: 'product_count',
+                                render: function (data) {
+                                    return '<span class="badge badge-info">' + (data || 0) + '</span>';
+                                }
+                            },
+                            {
+                                data: null,
+                                orderable: false,
+                                render: function (data) {
+                                    return '<div class="btn-group btn-group-sm">' +
+                                        '<button class="btn btn-info btn-edit" data-id="' + data.id + '" title="Editar"><i class="fa fa-edit"></i></button>' +
+                                        '<button class="btn btn-danger btn-delete" data-id="' + data.id + '" title="Eliminar"><i class="fa fa-trash"></i></button>' +
+                                        '</div>';
+                                }
+                            }
+                        ],
+                        order: [[0, 'desc']],
+                        language: { url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json' }
+                    });
+
+                    // Form submit
+                    $('#formCategory').submit(function (e) {
+                        e.preventDefault();
+                        var id = $('#categoryId').val();
+                        var url = id ? '/warehouse/categories/update' : '/warehouse/categories/create';
+                        $.post(url, $(this).serialize(), function (res) {
+                            if (res.success) {
+                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                                $('#modalCategory').modal('hide');
+                                $('#formCategory')[0].reset();
+                                $('#categoryId').val('');
+                                table.ajax.reload();
+                            } else {
+                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+
+                    // Edit category
+                    $(document).on('click', '.btn-edit', function () {
+                        var id = $(this).data('id');
+                        $.get('/warehouse/categories/select/' + id, function (res) {
+                            if (res.success) {
+                                var cat = res.data;
+                                $('#categoryId').val(cat.id);
+                                $('input[name="name"]').val(cat.name);
+                                $('textarea[name="description"]').val(cat.description);
+                                $('input[name="color"]').val(cat.color || '#348fe2');
+                                $('.modal-title').html('<i class="fa fa-edit mr-2"></i>Editar Categoría');
+                                $('#modalCategory').modal('show');
+                            }
+                        });
+                    });
+
+                    // Delete category
+                    $(document).on('click', '.btn-delete', function () {
+                        var id = $(this).data('id');
+                        $.confirm({
+                            title: '<i class="fa fa-trash text-danger"></i> Eliminar Categoría',
+                            content: '¿Está seguro de eliminar esta categoría?',
+                            type: 'red',
+                            buttons: {
+                                eliminar: {
+                                    btnClass: 'btn-danger',
+                                    action: function () {
+                                        $.post('/warehouse/categories/delete', { id: id }, function (res) {
+                                            if (res.success) {
+                                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                                                table.ajax.reload();
+                                            } else {
+                                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                                            }
+                                        });
+                                    }
+                                },
+                                cancelar: function () { }
+                            }
+                        });
+                    });
+
+                    // Reset modal on close
+                    $('#modalCategory').on('hidden.bs.modal', function () {
+                        $('#formCategory')[0].reset();
+                        $('#categoryId').val('');
+                        $('.modal-title').html('<i class="fa fa-tag mr-2"></i>Nueva Categoría');
+                    });
+                });
+            </script>

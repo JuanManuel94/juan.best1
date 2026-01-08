@@ -1,0 +1,157 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="/settings">Ajustes</a></li>
+                            <li class="breadcrumb-item active">Integraciones</li>
+                        </ol>
+                        <h1 class="page-header">Integraciones <small>API y Webhooks</small></h1>
+
+                        <form id="formAPI">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <!-- Google Maps -->
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-map-marked-alt mr-2"></i>Google Maps
+                                            </h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="alert alert-info">
+                                                <i class="fa fa-info-circle mr-1"></i> Necesario para la geolocalización
+                                                de clientes y técnicos.
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Google Maps API Key</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fa fa-key"></i></span></div>
+                                                    <input type="text" class="form-control" name="google_maps_api_key"
+                                                        placeholder="AIzaSy..."
+                                                        value="<%= settings?.google_maps_api_key || '' %>">
+                                                </div>
+                                                <small class="form-text text-muted">Debe tener habilitados los servicios
+                                                    de Maps JavaScript API y Geocoding API.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SmartOLT -->
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-network-wired mr-2"></i>SmartOLT
+                                            </h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>URL API</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fa fa-link"></i></span></div>
+                                                    <input type="text" class="form-control" name="smartolt_api_url"
+                                                        placeholder="https://dominio.smartolt.com/api"
+                                                        value="<%= settings?.smartolt_api_url || '' %>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>API Key (Token)</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fa fa-key"></i></span></div>
+                                                    <input type="password" class="form-control" name="smartolt_api_key"
+                                                        value="<%= settings?.smartolt_api_key || '' %>">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-default" type="button"
+                                                            onclick="$(this).parent().prev().attr('type', $(this).parent().prev().attr('type')=='password'?'text':'password')"><i
+                                                                class="fa fa-eye"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="smartoltEnabled"
+                                                    name="smartolt_enabled" <%=settings?.smartolt_enabled ? 'checked'
+                                                    : '' %>>
+                                                <label class="custom-control-label" for="smartoltEnabled">Habilitar
+                                                    sincronización con SmartOLT</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6">
+                                    <!-- WhatsApp -->
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                                                Business API</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="alert alert-secondary">
+                                                <i class="fa fa-info-circle mr-1"></i> Configuración para envío de
+                                                notificaciones automáticas.
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Phone Number ID</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fa fa-id-badge"></i></span></div>
+                                                    <input type="text" class="form-control" name="whatsapp_phone_id"
+                                                        value="<%= settings?.whatsapp_phone_id || '' %>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>WhatsApp Business Account ID</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                class="fa fa-briefcase"></i></span></div>
+                                                    <input type="text" class="form-control" name="whatsapp_business_id"
+                                                        value="<%= settings?.whatsapp_business_id || '' %>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Access Token (Permanent)</label>
+                                                <textarea class="form-control" name="whatsapp_token"
+                                                    rows="3"><%= settings?.whatsapp_token || '' %></textarea>
+                                            </div>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="whatsappEnabled"
+                                                    name="whatsapp_enabled" <%=settings?.whatsapp_enabled ? 'checked'
+                                                    : '' %>>
+                                                <label class="custom-control-label" for="whatsappEnabled">Habilitar
+                                                    notificaciones por WhatsApp</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-primary btn-lg"><i
+                                                class="fa fa-save mr-2"></i>Guardar Integraciones</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                $(document).ready(function () {
+                    $('#formAPI').submit(function (e) {
+                        e.preventDefault();
+                        $.post('/settings/api/update', $(this).serialize(), function (res) {
+                            if (res.success) {
+                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                            } else {
+                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+                });
+            </script>

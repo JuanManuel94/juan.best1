@@ -1,0 +1,76 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Finanzas</li>
+                            <li class="breadcrumb-item active">Facturación Electrónica</li>
+                        </ol>
+                        <h1 class="page-header">Facturación Electrónica <small>configuración de emisión</small></h1>
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Configuración</h4>
+                            </div>
+                            <div class="panel-body">
+                                <form id="formBilling">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Proveedor de Facturación</label>
+                                                <select class="form-control" name="provider">
+                                                    <option value="">Seleccionar proveedor</option>
+                                                    <option value="nubefact">Nubefact</option>
+                                                    <option value="sunat">SUNAT OSE</option>
+                                                    <option value="efact">eFact</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Token/API Key</label>
+                                                <input type="password" class="form-control" name="api_key">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>URL del Servicio</label>
+                                                <input type="text" class="form-control" name="service_url">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Serie de Factura</label>
+                                                <input type="text" class="form-control" name="invoice_series"
+                                                    placeholder="F001">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Serie de Boleta</label>
+                                                <input type="text" class="form-control" name="ticket_series"
+                                                    placeholder="B001">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Certificado Digital</label>
+                                                <input type="file" class="form-control" name="certificate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input type="checkbox" class="custom-control-input" id="autoEmit"
+                                            name="auto_emit">
+                                        <label class="custom-control-label" for="autoEmit">Emitir automáticamente al
+                                            registrar pago</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar
+                                        Configuración</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <%- include('../resources/includes/footer') %>
+            <script>
+                $('#formBilling').submit(function (e) {
+                    e.preventDefault();
+                    toastr.success('Configuración guardada (simulado)');
+                });
+            </script>

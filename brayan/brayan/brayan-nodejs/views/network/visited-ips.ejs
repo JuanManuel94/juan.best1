@@ -1,0 +1,49 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Gestión de Red</li>
+                            <li class="breadcrumb-item active">IPs Visitadas</li>
+                        </ol>
+                        <h1 class="page-header">IPs Visitadas <small>logs de navegación</small></h1>
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Registro de IPs</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle"></i> Requiere integración con router Mikrotik.
+                                </div>
+                                <table id="tableIps" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>CLIENTE</th>
+                                            <th>IP ORIGEN</th>
+                                            <th>IP DESTINO</th>
+                                            <th>FECHA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <%- include('../resources/includes/footer') %>
+            <script>
+                $(document).ready(function () {
+                    $('#tableIps').DataTable({
+                        data: [
+                            { id: 1, client: 'Juan', src: '192.168.1.10', dst: '8.8.8.8', date: '2024-01-15 10:00' }
+                        ],
+                        columns: [{ data: 'id' }, { data: 'client' }, { data: 'src' }, { data: 'dst' }, { data: 'date' }],
+                        language: { url: '/public/plugins/datatables/Spanish.json' }
+                    });
+                });
+            </script>

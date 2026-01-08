@@ -1,0 +1,46 @@
+#text-result2 {
+  color: green;
+  font-weight: bold;
+}
+
+#text-result3 {
+  color: violet;
+  font-weight: bold;
+}
+
+#text-deuda {
+  color: red;
+  font-weight: bold;
+}
+
+#text-result4 {
+  color: orange;
+  font-weight: bold;
+}
+#text-result6 {
+  color: green;
+  font-weight: bold;
+}
+
+#text-result7 {
+  color: violet;
+  font-weight: bold;
+}
+#text-result8 {
+  color: orange;
+  font-weight: bold;
+}
+
+.resultados-container {
+  display: flex;
+  justify-content: space-between; /* O el valor que necesites */
+  gap: 100px; 
+}
+
+@media (max-width: 767px) {
+  .resultados-container {
+    flex-direction: column;  /* O el valor que necesites */
+    align-items: center;     /* O el valor que necesites */
+    gap: 10px; 
+  }
+}

@@ -1,0 +1,100 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Finanzas</li>
+                            <li class="breadcrumb-item active">Pagos Masivos</li>
+                        </ol>
+                        <h1 class="page-header">Pagos Masivos <small>registro de pagos en lote</small></h1>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="panel panel-inverse">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Registrar Pagos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form id="formMassPayment">
+                                            <div class="form-group">
+                                                <label>Método de Pago</label>
+                                                <select class="form-control" name="payment_method">
+                                                    <option value="cash">Efectivo</option>
+                                                    <option value="transfer">Transferencia</option>
+                                                    <option value="deposit">Depósito</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Fecha de Pago</label>
+                                                <input type="date" class="form-control" name="payment_date"
+                                                    value="<%= new Date().toISOString().split('T')[0] %>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Notas</label>
+                                                <textarea class="form-control" name="notes" rows="2"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-block">
+                                                <i class="fa fa-check"></i> Procesar Pagos Seleccionados
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="panel panel-inverse">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Facturas Pendientes</h4>
+                                        <div class="panel-heading-btn">
+                                            <button class="btn btn-info btn-sm" onclick="selectAll()">Seleccionar
+                                                Todo</button>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table id="tablePending" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th width="30"><input type="checkbox" id="checkAll"></th>
+                                                    <th>CLIENTE</th>
+                                                    <th>FACTURA</th>
+                                                    <th>MONTO</th>
+                                                    <th>VENCIMIENTO</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <%- include('../resources/includes/footer') %>
+            <script>
+                $(document).ready(function () {
+                    $('#tablePending').DataTable({
+                        data: [
+                            { id: 1, client: 'Juan Pérez', bill: 'F001-001', amount: 50.00, due: '2024-01-20' },
+                            { id: 2, client: 'María López', bill: 'F001-002', amount: 80.00, due: '2024-01-18' },
+                            { id: 3, client: 'Carlos Ruiz', bill: 'F001-003', amount: 50.00, due: '2024-01-22' }
+                        ],
+                        columns: [
+                            { data: 'id', render: d => `<input type="checkbox" class="billCheck" value="${d}">` },
+                            { data: 'client' }, { data: 'bill' }, { data: 'amount', render: d => `S/ ${d}` }, { data: 'due' }
+                        ],
+                        language: { url: '/public/plugins/datatables/Spanish.json' }
+                    });
+                    $('#checkAll').change(function () {
+                        $('.billCheck').prop('checked', this.checked);
+                    });
+                    $('#formMassPayment').submit(function (e) {
+                        e.preventDefault();
+                        const selected = $('.billCheck:checked').map(function () { return this.value }).get();
+                        if (selected.length === 0) { toastr.warning('Seleccione facturas'); return; }
+                        toastr.success(`${selected.length} pagos procesados (simulado)`);
+                    });
+                });
+                function selectAll() { $('#checkAll').prop('checked', true).trigger('change'); }
+            </script>

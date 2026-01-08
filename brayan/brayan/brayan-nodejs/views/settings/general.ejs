@@ -1,0 +1,146 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="/settings">Ajustes</a></li>
+                            <li class="breadcrumb-item active">General</li>
+                        </ol>
+                        <h1 class="page-header">Ajustes Generales <small>configuración básica</small></h1>
+
+                        <form id="formGeneral">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-globe mr-2"></i>Configuración
+                                                Regional</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Zona Horaria</label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" name="timezone">
+                                                        <option value="America/Lima" selected>America/Lima (GMT-5)
+                                                        </option>
+                                                        <option value="America/Bogota">America/Bogota (GMT-5)</option>
+                                                        <option value="America/Mexico_City">America/Mexico_City (GMT-6)
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Idioma</label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" name="language">
+                                                        <option value="es" selected>Español</option>
+                                                        <option value="en">English</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Formato de Fecha</label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" name="date_format">
+                                                        <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
+                                                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-envelope mr-2"></i>Notificaciones
+                                            </h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Email para Alertas</label>
+                                                <input type="email" class="form-control" name="alert_email"
+                                                    placeholder="admin@empresa.com"
+                                                    value="<%= settings?.alert_email || '' %>">
+                                            </div>
+                                            <div class="custom-control custom-switch mb-2">
+                                                <input type="checkbox" class="custom-control-input" id="notifyEmail"
+                                                    name="notify_email" <%=settings?.notify_email ? 'checked' : '' %>>
+                                                <label class="custom-control-label" for="notifyEmail">Habilitar
+                                                    notificaciones por Email</label>
+                                            </div>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="notifyWhatsapp"
+                                                    name="notify_whatsapp" <%=settings?.notify_whatsapp ? 'checked' : ''
+                                                    %>>
+                                                <label class="custom-control-label" for="notifyWhatsapp">Habilitar
+                                                    notificaciones por WhatsApp</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6">
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-sliders-h mr-2"></i>Preferencias del
+                                                Sistema</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Tema por defecto</label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" name="theme">
+                                                        <option value="default" selected>Default (Verde Azulado)
+                                                        </option>
+                                                        <option value="dark">Dark Mode</option>
+                                                        <option value="light">Light Mode</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Registros por página</label>
+                                                <div class="col-lg-8">
+                                                    <input type="number" class="form-control" name="items_per_page"
+                                                        value="<%= settings?.items_per_page || 15 %>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Mensaje de Bienvenida</label>
+                                                <textarea class="form-control" name="welcome_message"
+                                                    rows="3"><%= settings?.welcome_message || 'Bienvenido al sistema WISP' %></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-primary btn-lg"><i
+                                                class="fa fa-save mr-2"></i>Guardar Cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                $(document).ready(function () {
+                    $('#formGeneral').submit(function (e) {
+                        e.preventDefault();
+                        $.post('/settings/general/update', $(this).serialize(), function (res) {
+                            if (res.success) {
+                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                            } else {
+                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+                });
+            </script>

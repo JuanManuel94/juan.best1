@@ -1,0 +1,73 @@
+table{
+    width: 100%;
+}
+hr{
+    border-top: dotted 1px;
+}
+.titulo{
+    font-size: 18px;
+    border: 0;
+}
+.text-center{
+    text-align: center;
+}
+.text-right{
+    text-align: right;
+}
+.text-left{
+    text-align: left;
+}
+.wd33{
+    width: 33.33%;
+}
+.tbl-logo tr td, .tbl-logo  tr th{
+    padding: 5px;
+    border: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.table-head{
+    background-color: #EEF2F3;
+}
+.tbl-cliente{
+    padding: 5px;
+    border: 1px solid #bdbdbd;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+table tr td, table tr th{
+    padding: 5px 10px;
+    font-family: arial;
+    font-size: 12px;
+    border: 1px solid #bdbdbd;
+}
+.tbl-servicio{
+    padding: 5px;
+    border: 1px solid #bdbdbd;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.tbl-producto{
+    padding: 5px;
+    border: 1px solid #bdbdbd;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.tbl-observacion{
+    padding: 5px;
+    border: 1px solid #bdbdbd;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.wd10{
+    width: 10%;
+}
+.wd15{
+    width: 15%;
+}
+.wd40{
+    width: 40%;
+}
+.wd55{
+    width: 55%;
+}

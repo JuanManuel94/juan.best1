@@ -1,0 +1,261 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:;">Finanzas</a></li>
+                            <li class="breadcrumb-item active">Otros Ingresos & Egresos</li>
+                        </ol>
+                        <h1 class="page-header">Otros Ingresos & Egresos <small>movimientos adicionales</small></h1>
+
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><i class="fa fa-exchange-alt mr-2"></i>Movimientos</h4>
+                                <div class="panel-heading-btn">
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#modalMovement">
+                                        <i class="fa fa-plus"></i> Nuevo Movimiento
+                                    </button>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                                        data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success"
+                                        data-click="panel-reload"><i class="fa fa-redo"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Filtros -->
+                                <div class="row mb-3 align-items-end">
+                                    <div class="col-md-2">
+                                        <label class="small text-muted">Tipo</label>
+                                        <select id="filterType" class="form-control form-control-sm">
+                                            <option value="">Todos</option>
+                                            <option value="income">Ingresos</option>
+                                            <option value="expense">Egresos</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="small text-muted">Desde</label>
+                                        <input type="date" id="filterStartDate" class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="small text-muted">Hasta</label>
+                                        <input type="date" id="filterEndDate" class="form-control form-control-sm">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button id="btnFilter" class="btn btn-primary btn-sm btn-block">
+                                            <i class="fa fa-search"></i> Filtrar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Tabla -->
+                                <div class="table-responsive">
+                                    <table id="tableMovements" class="table table-striped table-bordered table-hover"
+                                        style="width:100%">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>FECHA</th>
+                                                <th>TIPO</th>
+                                                <th>CATEGORÍA</th>
+                                                <th>DESCRIPCIÓN</th>
+                                                <th>COMPROBANTE</th>
+                                                <th>MONTO</th>
+                                                <th>ACCIONES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Nuevo Movimiento -->
+                    <div class="modal fade" id="modalMovement" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title"><i class="fa fa-plus-circle mr-2"></i>Nuevo Movimiento</h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                                </div>
+                                <form id="formMovement">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label><i class="fa fa-tag text-muted mr-1"></i> Tipo *</label>
+                                                    <select name="type" class="form-control" required>
+                                                        <option value="income">Ingreso</option>
+                                                        <option value="expense">Egreso</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label><i class="fa fa-calendar text-muted mr-1"></i> Fecha
+                                                        *</label>
+                                                    <input type="date" name="movement_date" class="form-control"
+                                                        required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label><i class="fa fa-folder text-muted mr-1"></i> Categoría
+                                                        *</label>
+                                                    <select name="category" class="form-control" required>
+                                                        <option value="">Seleccionar...</option>
+                                                        <option value="utilities">Servicios públicos</option>
+                                                        <option value="rent">Alquiler</option>
+                                                        <option value="salary">Salarios</option>
+                                                        <option value="equipment">Equipos</option>
+                                                        <option value="maintenance">Mantenimiento</option>
+                                                        <option value="marketing">Marketing</option>
+                                                        <option value="other_income">Otros ingresos</option>
+                                                        <option value="other_expense">Otros gastos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label><i class="fa fa-dollar-sign text-muted mr-1"></i> Monto
+                                                        *</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">S/</span>
+                                                        </div>
+                                                        <input type="number" name="amount" class="form-control"
+                                                            step="0.01" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fa fa-align-left text-muted mr-1"></i> Descripción</label>
+                                            <textarea name="description" class="form-control" rows="2"
+                                                placeholder="Detalles del movimiento..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><i class="fa fa-file text-muted mr-1"></i> Número de
+                                                Comprobante</label>
+                                            <input type="text" name="voucher_number" class="form-control"
+                                                placeholder="Ej: 001-00001234">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">
+                                            <i class="fa fa-times"></i> Cancelar
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-save"></i> Guardar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <style>
+                .thead-dark th {
+                    background-color: #2d353c;
+                    color: #fff;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-size: 11px;
+                }
+            </style>
+
+            <script>
+                $(document).ready(function () {
+                    // Set default date
+                    var today = new Date().toISOString().split('T')[0];
+                    $('input[name="movement_date"]').val(today);
+
+                    // Initialize DataTable
+                    var table = $('#tableMovements').DataTable({
+                        ajax: { url: '/finance/other-movements/list', dataSrc: 'data' },
+                        columns: [
+                            { data: 'id' },
+                            {
+                                data: 'movement_date',
+                                render: function (data) {
+                                    return new Date(data).toLocaleDateString('es-PE');
+                                }
+                            },
+                            {
+                                data: 'type',
+                                render: function (data) {
+                                    return data === 'income' ?
+                                        '<span class="badge badge-success"><i class="fa fa-arrow-up"></i> Ingreso</span>' :
+                                        '<span class="badge badge-danger"><i class="fa fa-arrow-down"></i> Egreso</span>';
+                                }
+                            },
+                            {
+                                data: 'category',
+                                render: function (data) {
+                                    var cats = { utilities: 'Servicios', rent: 'Alquiler', salary: 'Salarios', equipment: 'Equipos', maintenance: 'Mantenimiento', marketing: 'Marketing', other_income: 'Otros ingresos', other_expense: 'Otros gastos' };
+                                    return cats[data] || data;
+                                }
+                            },
+                            { data: 'description' },
+                            { data: 'voucher_number' },
+                            {
+                                data: 'amount',
+                                render: function (data, type, row) {
+                                    var color = row.type === 'income' ? 'text-success' : 'text-danger';
+                                    var sign = row.type === 'income' ? '+' : '-';
+                                    return '<span class="' + color + ' font-weight-bold">' + sign + ' S/ ' + parseFloat(data).toFixed(2) + '</span>';
+                                }
+                            },
+                            {
+                                data: null,
+                                orderable: false,
+                                render: function (data) {
+                                    return '<div class="btn-group btn-group-sm">' +
+                                        '<button class="btn btn-info btn-edit" data-id="' + data.id + '"><i class="fa fa-edit"></i></button>' +
+                                        '<button class="btn btn-danger btn-delete" data-id="' + data.id + '"><i class="fa fa-trash"></i></button>' +
+                                        '</div>';
+                                }
+                            }
+                        ],
+                        order: [[0, 'desc']],
+                        language: { url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json' }
+                    });
+
+                    // Filter
+                    $('#btnFilter').click(function () {
+                        var params = $.param({
+                            type: $('#filterType').val(),
+                            start_date: $('#filterStartDate').val(),
+                            end_date: $('#filterEndDate').val()
+                        });
+                        table.ajax.url('/finance/other-movements/list?' + params).load();
+                    });
+
+                    // Form submit
+                    $('#formMovement').submit(function (e) {
+                        e.preventDefault();
+                        $.post('/finance/other-movements/create', $(this).serialize(), function (res) {
+                            if (res.success) {
+                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                                $('#modalMovement').modal('hide');
+                                $('#formMovement')[0].reset();
+                                $('input[name="movement_date"]').val(today);
+                                table.ajax.reload();
+                            } else {
+                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+                });
+            </script>

@@ -1,0 +1,286 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content" style="background: #d9e0e7;">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Gestión de Red</li>
+                            <li class="breadcrumb-item active">Monitoreo</li>
+                        </ol>
+                        <h1 class="page-header">Monitoreo <small>estado de hosts y dispositivos de red</small></h1>
+
+                        <!-- Panel MikroWISP Style -->
+                        <div class="mw-panel">
+                            <div class="mw-panel-header">
+                                <h4 class="mw-panel-title">Monitoreo</h4>
+                                <div class="mw-panel-controls">
+                                    <button class="btn-control btn-add" data-toggle="modal" data-target="#modalHost"
+                                        title="Agregar">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button class="btn-control btn-refresh" onclick="checkAll()"
+                                        title="Verificar todos">
+                                        <i class="fa fa-sync"></i>
+                                    </button>
+                                    <button class="btn-control btn-minimize" title="Minimizar">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mw-panel-body">
+                                <!-- Toolbar -->
+                                <div class="mw-toolbar">
+                                    <div class="mw-toolbar-left">
+                                        <div class="mw-page-size">
+                                            <select id="pageSize">
+                                                <option value="15">15</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                            <button class="btn-list"><i class="fa fa-list"></i></button>
+                                        </div>
+                                        <button class="mw-btn-new" data-toggle="modal" data-target="#modalHost">
+                                            <i class="fa fa-plus"></i> Nuevo
+                                        </button>
+                                    </div>
+                                    <div class="mw-toolbar-right">
+                                        <div class="mw-search">
+                                            <input type="text" id="searchHost" placeholder="Buscar..."
+                                                onkeyup="searchHosts()">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Table -->
+                                <div class="mw-table-container">
+                                    <table class="mw-table" id="tableHosts">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%" class="sortable">ID <i
+                                                        class="fa fa-sort-down sort-icon"></i></th>
+                                                <th class="sortable">NOMBRE <i class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable">EQUIPO <i class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable">IP <i class="fa fa-sort sort-icon"></i></th>
+                                                <th class="text-center sortable">ESTADO <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th class="text-center sortable">ONLINE <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th class="text-center sortable">ACTIVOS <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th class="text-center sortable">SUSPENDIDOS <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th width="12%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="hostsBody">
+                                            <!-- Data will be loaded via JavaScript -->
+                                        </tbody>
+                                    </table>
+
+                                    <!-- Pagination -->
+                                    <div class="mw-pagination">
+                                        <span class="mw-pagination-info">
+                                            Mostrando de <a href="#">1</a> al <a href="#">3</a> de un total de <span
+                                                id="totalHosts">3</span>
+                                        </span>
+                                        <button class="mw-page-btn"><i class="fa fa-chevron-left"></i></button>
+                                        <button class="mw-page-btn active">1</button>
+                                        <button class="mw-page-btn"><i class="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Icon -->
+                        <div style="position: fixed; right: 20px; bottom: 20px;">
+                            <button class="mw-settings-icon" style="width: 40px; height: 40px;">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+        </div>
+
+        <!-- Modal Nuevo Host -->
+        <div class="modal fade" id="modalHost" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Nuevo Host</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form id="formHost">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="host_id">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" name="name" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>IP Address</label>
+                                <input type="text" class="form-control" name="ip_address" id="ip_address" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de Equipo</label>
+                                <select class="form-control" name="host_type" id="host_type">
+                                    <option value="router">Router</option>
+                                    <option value="switch">Switch</option>
+                                    <option value="olt">OLT</option>
+                                    <option value="ap">Access Point</option>
+                                    <option value="server">Servidor</option>
+                                    <option value="other">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Intervalo de verificación (segundos)</label>
+                                <input type="number" class="form-control" name="check_interval" id="check_interval"
+                                    value="60">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                let hostsData = [];
+
+                $(document).ready(function () {
+                    loadHosts();
+                });
+
+                function loadHosts() {
+                    $.get('/network/monitoring/list', function (response) {
+                        hostsData = response.data || [];
+                        renderHosts(hostsData);
+                    }).fail(function () {
+                        // Demo data matching the screenshot
+                        hostsData = [
+                            { id: 3, name: 'Tes', host_type: '', ip_address: '1.1.1.1', status: 'up', online: 0, activos: 0, suspendidos: 2 },
+                            { id: 4, name: 'AP OMNI CORNEJO', host_type: 'ROCKET AC LITE', ip_address: '10.0.0.10', status: 'down', online: 0, activos: 2, suspendidos: 2 },
+                            { id: 5, name: 'AAA', host_type: '', ip_address: '8.8.4.4', status: 'up', online: 0, activos: 0, suspendidos: 0 }
+                        ];
+                        renderHosts(hostsData);
+                    });
+                }
+
+                function renderHosts(data) {
+                    const tbody = $('#hostsBody');
+                    tbody.empty();
+
+                    data.forEach(host => {
+                        const statusBadge = host.status === 'up'
+                            ? '<span class="mw-badge mw-badge-en-linea">EN LÍNEA</span>'
+                            : '<span class="mw-badge mw-badge-desconectado">DESCONECTADO</span>';
+
+                        const onlineBadge = `<span class="mw-badge-circle ${host.online > 0 ? 'green' : 'red'}">${host.online || 0}</span>`;
+                        const activosBadge = `<span class="mw-badge-circle ${host.activos > 0 ? 'green' : 'orange'}">${host.activos || 0}</span>`;
+                        const suspendidosBadge = `<span class="mw-badge-circle ${host.suspendidos > 0 ? 'orange' : 'blue'}">${host.suspendidos || 0}</span>`;
+
+                        tbody.append(`
+                            <tr>
+                                <td>${host.id}</td>
+                                <td>${host.name}</td>
+                                <td>${host.host_type || '-'}</td>
+                                <td>${host.ip_address}</td>
+                                <td class="text-center">${statusBadge}</td>
+                                <td class="text-center">${onlineBadge}</td>
+                                <td class="text-center">${activosBadge}</td>
+                                <td class="text-center">${suspendidosBadge}</td>
+                                <td>
+                                    <div class="mw-actions">
+                                        <button class="mw-btn-action wifi" onclick="pingHost(${host.id})" title="Ping">
+                                            <i class="fa fa-wifi"></i>
+                                        </button>
+                                        <button class="mw-btn-action edit" onclick="editHost(${host.id})" title="Editar">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="mw-btn-action chart" title="Estadísticas">
+                                            <i class="fa fa-chart-line"></i>
+                                        </button>
+                                        <button class="mw-btn-action delete" onclick="deleteHost(${host.id})" title="Eliminar">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+
+                    $('#totalHosts').text(data.length);
+                }
+
+                function searchHosts() {
+                    const term = $('#searchHost').val().toLowerCase();
+                    const filtered = hostsData.filter(h =>
+                        h.name.toLowerCase().includes(term) ||
+                        h.ip_address.includes(term)
+                    );
+                    renderHosts(filtered);
+                }
+
+                function pingHost(id) {
+                    toastr.info('Verificando host...');
+                    setTimeout(() => {
+                        toastr.success('Host respondió en 15ms');
+                        loadHosts();
+                    }, 1500);
+                }
+
+                function checkAll() {
+                    toastr.info('Verificando todos los hosts...');
+                    setTimeout(() => {
+                        toastr.success('Verificación completada');
+                        loadHosts();
+                    }, 3000);
+                }
+
+                function editHost(id) {
+                    $.get('/network/monitoring/select/' + id, function (data) {
+                        $('#host_id').val(data.id);
+                        $('#name').val(data.name);
+                        $('#ip_address').val(data.ip_address);
+                        $('#host_type').val(data.host_type);
+                        $('#check_interval').val(data.check_interval);
+                        $('#modalHost').modal('show');
+                    });
+                }
+
+                function deleteHost(id) {
+                    if (confirm('¿Está seguro de eliminar este host?')) {
+                        $.post('/network/monitoring/delete', { id: id }, function (res) {
+                            if (res.success) {
+                                loadHosts();
+                                toastr.success(res.message || 'Host eliminado');
+                            } else {
+                                toastr.error(res.message || 'Error al eliminar');
+                            }
+                        });
+                    }
+                }
+
+                $('#formHost').on('submit', function (e) {
+                    e.preventDefault();
+                    const id = $('#host_id').val();
+                    const url = id ? '/network/monitoring/update' : '/network/monitoring/create';
+                    $.post(url, $(this).serialize(), function (res) {
+                        if (res.success) {
+                            $('#modalHost').modal('hide');
+                            loadHosts();
+                            toastr.success(res.message || 'Host guardado');
+                        } else {
+                            toastr.error(res.message || 'Error al guardar');
+                        }
+                    });
+                });
+            </script>

@@ -1,0 +1,302 @@
+<div id="sidebar" class="sidebar">
+    <div data-scrollbar="true" data-height="100%">
+        <ul class="nav">
+            <li class="nav-profile">
+                <a href="javascript:;" data-toggle="nav-profile">
+                    <div class="cover with-shadow"></div>
+                    <div class="image">
+                        <% let userImage='/public/images/user/default.png' ; if (typeof userData !=='undefined' &&
+                            userData && userData.image) { if (userData.image !=='default.png' ) {
+                            userImage='/public/uploads/users/' + userData.image; } } %>
+                            <img src="<%= userImage %>" alt="">
+                    </div>
+                    <div class="info">
+                        <b class="caret pull-right"></b>
+                        <% if (typeof userData !=='undefined' && userData) { %>
+                            <%= userData.names || '' %>
+                                <%= userData.surnames || '' %>
+                                    <small>
+                                        <%= userData.profile || 'Usuario' %>
+                                    </small>
+                                    <% } else { %>
+                                        Usuario
+                                        <small>Perfil</small>
+                                        <% } %>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <ul class="nav nav-profile">
+                    <li><a href="/settings/general"><i class="fa fa-cog"></i> Configuración</a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out-alt"></i> Cerrar sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav">
+            <li class="nav-header">Navegación</li>
+            <li class="<%= typeof page_name !== 'undefined' && page_name === 'Dashboard' ? 'active' : '' %>">
+                <a href="/dashboard">
+                    <i class="fa fa-th-large"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Gestión de Routers', 'Routers', 'SmartOLT', 'Redes IPv4', 'Monitoreo', 'Monitor de Tráfico', 'IPs Visitadas', 'Monitor BlackList'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-network-wired"></i>
+                    <span>Gestión de Red</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Gestión de Routers', 'Routers', 'SmartOLT', 'Redes IPv4', 'Monitoreo', 'Monitor de Tráfico', 'IPs Visitadas', 'Monitor BlackList'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Gestión de Routers' ? 'active' : '' %>">
+                        <a href="/routers">Routers</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'SmartOLT' ? 'active' : '' %>">
+                        <a href="/network/smartolt">SmartOLT</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Redes IPv4' ? 'active' : '' %>">
+                        <a href="/network/ipv4">Redes IPv4</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Monitoreo' ? 'active' : '' %>">
+                        <a href="/network/monitoring">Monitoreo</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Monitor de Tráfico' ? 'active' : '' %>">
+                        <a href="/network/traffic">Tráfico</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'IPs Visitadas' ? 'active' : '' %>">
+                        <a href="/network/visited-ips">IPs Visitadas</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Monitor BlackList' ? 'active' : '' %>">
+                        <a href="/network/blacklist">Monitor BlackList</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Planes de Internet', 'Internet', 'Planes de Voz', 'Servicios Personalizados'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-cubes"></i>
+                    <span>Servicios</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Planes de Internet', 'Internet', 'Planes de Voz', 'Servicios Personalizados'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Planes de Internet' ? 'active' : '' %>">
+                        <a href="/services/internet">Internet</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Planes de Voz' ? 'active' : '' %>">
+                        <a href="/services/voice">Voz</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Servicios Personalizados' ? 'active' : '' %>">
+                        <a href="/services/custom">Personalizado</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Clientes', 'Mapa de Clientes', 'Instalaciones', 'Contratos', 'Anuncios', 'Correos'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Clientes', 'Mapa de Clientes', 'Instalaciones', 'Contratos', 'Anuncios', 'Correos'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Clientes' ? 'active' : '' %>">
+                        <a href="/customers">Usuarios</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Mapa de Clientes' ? 'active' : '' %>">
+                        <a href="/customers/map">Mapa clientes</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Instalaciones' ? 'active' : '' %>">
+                        <a href="/customers/installations">Instalaciones</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Contratos' ? 'active' : '' %>">
+                        <a href="/customers/contracts">Contratos</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Anuncios' ? 'active' : '' %>">
+                        <a href="/customers/announcements">Anuncios</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Correos' ? 'active' : '' %>">
+                        <a href="/customers/emails">Correos</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Fichas Hotspot', 'Routers Hotspot', 'Plantillas Hotspot'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-wifi"></i>
+                    <span>Fichas Hotspot</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Fichas Hotspot', 'Routers Hotspot', 'Plantillas Hotspot'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Fichas Hotspot' ? 'active' : '' %>">
+                        <a href="/hotspot/vouchers">Fichas</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Routers Hotspot' ? 'active' : '' %>">
+                        <a href="/hotspot/routers">Routers</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Plantillas Hotspot' ? 'active' : '' %>">
+                        <a href="/hotspot/templates">Plantillas</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="<%= typeof page_name !== 'undefined' && page_name === 'Tareas' ? 'active' : '' %>">
+                <a href="/tasks">
+                    <i class="fa fa-tasks"></i>
+                    <span>Tareas</span>
+                </a>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Facturas', 'Pagos', 'Transacciones', 'Registrar Pago', 'Otros Ingresos & Egresos', 'Reportes de Pago', 'Pagos Masivos', 'Facturación Electrónica'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-money-bill-wave"></i>
+                    <span>Finanzas</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Facturas', 'Pagos', 'Transacciones', 'Registrar Pago', 'Otros Ingresos & Egresos', 'Reportes de Pago', 'Pagos Masivos', 'Facturación Electrónica'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Facturas' ? 'active' : '' %>">
+                        <a href="/bills">Facturas</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Registrar Pago' ? 'active' : '' %>">
+                        <a href="/finance/payment">Registrar pago</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Pagos Masivos' ? 'active' : '' %>">
+                        <a href="/finance/mass-payments">Pagos Masivos</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Transacciones' ? 'active' : '' %>">
+                        <a href="/finance/transactions">Transacciones</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Otros Ingresos & Egresos' ? 'active' : '' %>">
+                        <a href="/finance/other-movements">Otros Ingresos & Egresos</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Reportes de Pago' ? 'active' : '' %>">
+                        <a href="/finance/reports">Reportes de pago</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Facturación Electrónica' ? 'active' : '' %>">
+                        <a href="/finance/electronic-billing">Facturación Electrónica</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Productos y Servicios', 'Productos', 'Proveedores', 'Tipos de Productos'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-warehouse"></i>
+                    <span>Almacén</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Productos y Servicios', 'Productos', 'Proveedores', 'Tipos de Productos'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Tipos de Productos' ? 'active' : '' %>">
+                        <a href="/warehouse/categories">Tipos de Productos</a>
+                    </li>
+                    <li class="<%= typeof page_name !== 'undefined' && page_name === 'Proveedores' ? 'active' : '' %>">
+                        <a href="/warehouse/suppliers">Proveedores</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Productos y Servicios' ? 'active' : '' %>">
+                        <a href="/warehouse/products">Productos</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Tickets de Soporte', 'Tickets', 'Tickets Respondidos', 'Tickets Cerrados'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-ticket-alt"></i>
+                    <span>Tickets</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Tickets de Soporte', 'Tickets', 'Tickets Respondidos', 'Tickets Cerrados'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Tickets de Soporte' ? 'active' : '' %>">
+                        <a href="/tickets">Esperando respuesta</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Tickets Respondidos' ? 'active' : '' %>">
+                        <a href="/tickets/answered">Contestados</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Tickets Cerrados' ? 'active' : '' %>">
+                        <a href="/tickets/closed">Cerrados</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Chat WhatsApp', 'Mensajes Enviados', 'Mensajes Recibidos'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-envelope"></i>
+                    <span>Mensajería</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Chat WhatsApp', 'Mensajes Enviados', 'Mensajes Recibidos'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Chat WhatsApp' ? 'active' : '' %>">
+                        <a href="/messaging/whatsapp">Chat WhatsApp</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Mensajes Enviados' ? 'active' : '' %>">
+                        <a href="/messaging/sent">Mensajes enviados</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Mensajes Recibidos' ? 'active' : '' %>">
+                        <a href="/messaging/received">Mensajes recibidos</a>
+                    </li>
+                </ul>
+            </li>
+            <li
+                class="has-sub <%= typeof page_name !== 'undefined' && ['Configuración General', 'Ajustes', 'Usuarios del sistema', 'Datos de Empresa', 'Configuración de Facturación', 'API / Webhooks'].includes(page_name) ? 'active expand' : '' %>">
+                <a href="javascript:;">
+                    <b class="caret"></b>
+                    <i class="fa fa-cogs"></i>
+                    <span>Ajustes</span>
+                </a>
+                <ul class="sub-menu"
+                    style="<%= typeof page_name !== 'undefined' && ['Configuración General', 'Ajustes', 'Usuarios del sistema', 'Datos de Empresa', 'Configuración de Facturación', 'API / Webhooks'].includes(page_name) ? 'display: block;' : '' %>">
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Configuración General' ? 'active' : '' %>">
+                        <a href="/settings/general">General</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Usuarios del sistema' ? 'active' : '' %>">
+                        <a href="/users">Usuarios del sistema</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Datos de Empresa' ? 'active' : '' %>">
+                        <a href="/settings/company">Empresa</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'Configuración de Facturación' ? 'active' : '' %>">
+                        <a href="/settings/billing">Facturación</a>
+                    </li>
+                    <li
+                        class="<%= typeof page_name !== 'undefined' && page_name === 'API / Webhooks' ? 'active' : '' %>">
+                        <a href="/settings/api">API / Webhooks</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="sidebar-bg"></div>

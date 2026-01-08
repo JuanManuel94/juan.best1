@@ -1,0 +1,133 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="/settings">Ajustes</a></li>
+                            <li class="breadcrumb-item active">Facturación</li>
+                        </ol>
+                        <h1 class="page-header">Configuración de Facturación <small>impuestos y moneda</small></h1>
+
+                        <form id="formBilling">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-money-bill mr-2"></i>Moneda e
+                                                Impuestos</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Moneda</label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" name="currency">
+                                                        <option value="PEN" selected>Soles (S/)</option>
+                                                        <option value="USD">Dólares ($)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Nombre del Impuesto</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control" name="tax_name"
+                                                        value="<%= settings?.tax_name || 'IGV' %>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label">Porcentaje (%)</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control" name="tax_percent"
+                                                            value="<%= settings?.tax_percent || 18 %>">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="taxIncluded"
+                                                    name="tax_included" <%=settings?.tax_included ? 'checked' : '' %>>
+                                                <label class="custom-control-label" for="taxIncluded">Los precios
+                                                    incluyen impuestos</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6">
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-calendar-times mr-2"></i>Cortes y
+                                                Suspensión</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label">Días de gracia</label>
+                                                <div class="col-lg-6">
+                                                    <input type="number" class="form-control" name="grace_days"
+                                                        value="<%= settings?.grace_days || 3 %>">
+                                                    <small class="text-muted">Días después del vencimiento antes de
+                                                        cortar</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label">Costo por reconexión</label>
+                                                <div class="col-lg-6">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">S/</span>
+                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            name="reconnection_cost"
+                                                            value="<%= settings?.reconnection_cost || 0 %>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-6 col-form-label">Mora por retraso (%)</label>
+                                                <div class="col-lg-6">
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control"
+                                                            name="late_fee_percent"
+                                                            value="<%= settings?.late_fee_percent || 0 %>">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-primary btn-lg"><i
+                                                class="fa fa-save mr-2"></i>Guardar Configuración</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                $(document).ready(function () {
+                    $('#formBilling').submit(function (e) {
+                        e.preventDefault();
+                        $.post('/settings/billing/update', $(this).serialize(), function (res) {
+                            if (res.success) {
+                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                            } else {
+                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+                });
+            </script>

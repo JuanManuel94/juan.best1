@@ -1,0 +1,197 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="/settings">Ajustes</a></li>
+                            <li class="breadcrumb-item active">Empresa</li>
+                        </ol>
+                        <h1 class="page-header">Datos de Empresa <small>información corporativa</small></h1>
+
+                        <form id="formCompany" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-xl-8">
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-building mr-2"></i>Información
+                                                General</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Razón Social *</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend"><span
+                                                                    class="input-group-text"><i
+                                                                        class="fa fa-building"></i></span></div>
+                                                            <input type="text" class="form-control" name="business_name"
+                                                                value="<%= business?.business_name || '' %>" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>RUC / NIT *</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend"><span
+                                                                    class="input-group-text"><i
+                                                                        class="fa fa-id-card"></i></span></div>
+                                                            <input type="text" class="form-control" name="ruc"
+                                                                value="<%= business?.ruc || '' %>" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Teléfono</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend"><span
+                                                                    class="input-group-text"><i
+                                                                        class="fa fa-phone"></i></span></div>
+                                                            <input type="text" class="form-control" name="mobile"
+                                                                value="<%= business?.mobile || '' %>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Correo Electrónico</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend"><span
+                                                                    class="input-group-text"><i
+                                                                        class="fa fa-envelope"></i></span></div>
+                                                            <input type="email" class="form-control" name="email"
+                                                                value="<%= business?.email || '' %>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Dirección Fiscal</label>
+                                                <textarea class="form-control" name="address"
+                                                    rows="2"><%= business?.address || '' %></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Ciudad</label>
+                                                        <input type="text" class="form-control" name="city"
+                                                            value="<%= business?.city || '' %>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Sitio Web</label>
+                                                        <input type="url" class="form-control" name="website"
+                                                            value="<%= business?.website || '' %>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4">
+                                    <div class="panel panel-inverse">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><i class="fa fa-images mr-2"></i>Logotipos</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Logo del Sistema (Barra lateral)</label>
+                                                <% if (business?.logo_system) { %>
+                                                    <div class="mb-2 p-2 bg-light text-center rounded">
+                                                        <img src="/public/uploads/<%= business.logo_system %>"
+                                                            height="40" class="d-inline-block">
+                                                    </div>
+                                                    <% } %>
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" id="logoSystem"
+                                                                name="logo_system">
+                                                            <label class="custom-file-label" for="logoSystem">Elegir
+                                                                archivo...</label>
+                                                        </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Logo Login</label>
+                                                <% if (business?.logo_login) { %>
+                                                    <div class="mb-2 p-2 bg-light text-center rounded">
+                                                        <img src="/public/uploads/<%= business.logo_login %>"
+                                                            height="40" class="d-inline-block">
+                                                    </div>
+                                                    <% } %>
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" id="logoLogin"
+                                                                name="logo_login">
+                                                            <label class="custom-file-label" for="logoLogin">Elegir
+                                                                archivo...</label>
+                                                        </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Favicon</label>
+                                                <% if (business?.favicon) { %>
+                                                    <div class="mb-2 p-2 bg-light text-center rounded">
+                                                        <img src="/public/uploads/<%= business.favicon %>" height="32"
+                                                            class="d-inline-block">
+                                                    </div>
+                                                    <% } %>
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" id="favicon"
+                                                                name="favicon">
+                                                            <label class="custom-file-label" for="favicon">Elegir
+                                                                archivo...</label>
+                                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i
+                                            class="fa fa-save mr-2"></i>Guardar Cambios</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                $(document).ready(function () {
+                    // Custom file input label update
+                    $('.custom-file-input').on('change', function () {
+                        var fileName = $(this).val().split('\\').pop();
+                        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+                    });
+
+                    $('#formCompany').submit(function (e) {
+                        e.preventDefault();
+                        var formData = new FormData(this);
+                        $.ajax({
+                            url: '/settings/company/update',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                                if (res.success) {
+                                    $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                                    setTimeout(function () { location.reload(); }, 1500);
+                                } else {
+                                    $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                                }
+                            },
+                            error: function () {
+                                $.gritter.add({ title: 'Error', text: 'Error al procesar la solicitud', class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+                });
+            </script>
