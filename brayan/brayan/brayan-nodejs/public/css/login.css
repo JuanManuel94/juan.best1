@@ -1,0 +1,187 @@
+/* General */
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #d9e0e7;
+    z-index: 9999;
+    display: none;
+}
+.loading-spinner {
+    height: 36px;
+    width: 36px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -18px 0 0 -18px;
+    border: 2px solid rgba(45,53,60,.85);
+    border-top: 2px solid #fff;
+    -webkit-border-radius: 36px;
+    border-radius: 36px;
+    -webkit-animation: rotation .6s infinite linear;
+    -moz-animation: rotation .6s infinite linear;
+    -ms-animation: rotation .6s infinite linear;
+    -o-animation: rotation .6s infinite linear;
+    animation: rotation .6s infinite linear;
+}
+.form-group i.showPass{
+    right: 0;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    margin-right: 20px;
+    transform: translateY(-90%);
+    color: #999;
+    font-size: 20px;
+    transition: all 0.2s ease;
+}
+.form-group i.showPassConfirm{
+    right: 0;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    margin-right: 20px;
+    transform: translateY(70%);
+    color: #999;
+    font-size: 20px;
+    transition: all 0.2s ease;
+}
+.form-group i.showHidePw{
+    right: 0;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    margin-right: 20px;
+    transform: translateY(-42%);
+    color: #999;
+    font-size: 20px;
+    transition: all 0.2s ease;
+}
+/* End General */
+::selection {
+  color: #ffffff;
+  background-color: #00acac;
+}
+.checkbox.checkbox-css input:checked + label::before {
+  background: #00acac;
+  border-color: #00acac;
+}
+/* Background */
+.login-cover, .login-cover-bg, .login-cover-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover !important;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /*transition: background .2s linear;
+  -webkit-animation: background_zoom 120s infinite linear;
+  animation: background_zoom 120s infinite linear;*/
+}
+/*@-webkit-keyframes background_zoom{
+  0% {transform:scale(1) rotate(0deg)}
+  50% {transform:scale(1.4) rotate(0.3deg)}
+  100% {transform:scale(1) rotate(0deg)}
+}
+@keyframes background_zoom{
+  0% {transform:scale(1) rotate(0deg)}
+  50% {transform:scale(1.4) rotate(0.3deg)}
+  100% {transform:scale(1) rotate(0deg)}
+}*/
+/* End Background */
+/* Jconfirm */
+.jconfirm .jconfirm-box.jconfirm-type-success{
+  border-top: solid 7px #00acac !important;
+  -webkit-animation-name: type-green;
+  animation-name: type-green;
+}
+.jconfirm .jconfirm-box.jconfirm-type-success .jconfirm-title-c .jconfirm-icon-c{
+  color: #00acac !important;
+}
+.jconfirm .jconfirm-box.jconfirm-type-info{
+  border-top: solid 7px #49b6d6 !important;
+  -webkit-animation-name: type-blue;
+  animation-name: type-blue;
+}
+.jconfirm .jconfirm-box.jconfirm-type-info .jconfirm-title-c .jconfirm-icon-c{
+  color: #49b6d6 !important;
+}
+/* End Jconfirm */
+/* Alertas */
+.alert-warning .gritter-item p,.alert-success .gritter-item p,.alert-error .gritter-item p,.alert-info .gritter-item p {
+    color: #FFF !important;
+    font-size: 12px !important;
+}
+.gritter-close:before, .gritter-light .gritter-close:before {
+    font-family:Font Awesome\ 5 Free !important;
+    content: "\f00d" !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+}
+.alert-success .gritter-bottom,.alert-success .gritter-item,.alert-success .gritter-top {
+    background: #00acac !important;
+}
+.alert-warning .gritter-bottom,.alert-warning .gritter-item,.alert-warning .gritter-top {
+    background: #F8AC59 !important;
+}
+.alert-info .gritter-bottom,.alert-info .gritter-item,.alert-info .gritter-top {
+    background: #1C84C6 !important;
+}
+.alert-error .gritter-bottom,.alert-error .gritter-item,.alert-error .gritter-top {
+    background: #F66C5E !important;
+}
+.alert-success .gritter-close,.alert-success .gritter-light .gritter-close {
+    border-left: 1px solid #227975;
+}
+.alert-error .gritter-close,.alert-error .gritter-light .gritter-close {
+    border-left: 1px solid #943f3f;
+}
+.gritter-image i{
+    font-size: 45px;
+    color: #fff;
+}
+.alert-loader .gritter-image i{
+    font-size: 30px;
+    color: #fff;
+}
+.alert-loader .gritter-image {
+    width: 35px;
+    height: 35px;
+    float: left;
+}
+.alert-success .gritter-close{
+    color: #FFFFFF !important
+}
+.alert-warning .gritter-close{
+    color: #FFFFFF !important;
+}
+.alert-info .gritter-close{
+    color: #FFFFFF !important
+}
+.alert-error .gritter-close{
+    color: #FFFFFF !important;
+}
+.alert-success .gritter-title {
+    font-size: 13px !important;
+	  font-weight: bold !important;
+}
+.alert-warning .gritter-title {
+    font-size: 13px !important;
+	  font-weight: bold !important;
+}
+.alert-info .gritter-title {
+    font-size: 13px !important;
+	  font-weight: bold !important;
+}
+.alert-error .gritter-title {
+    font-size: 13px!important;
+	  font-weight:bold !important;
+}
+/* End Alertas */

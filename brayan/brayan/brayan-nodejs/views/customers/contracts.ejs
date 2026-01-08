@@ -1,0 +1,111 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Clientes</li>
+                            <li class="breadcrumb-item active">Contratos</li>
+                        </ol>
+                        <h1 class="page-header">Contratos <small>gestión de contratos de servicio</small></h1>
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Contratos</h4>
+                                <div class="panel-heading-btn">
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#modalContract">
+                                        <i class="fa fa-plus"></i> Nuevo Contrato
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="tableContracts" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>NÚMERO</th>
+                                            <th>CLIENTE</th>
+                                            <th>INICIO</th>
+                                            <th>FIN</th>
+                                            <th>MONTO</th>
+                                            <th>ESTADO</th>
+                                            <th>ACCIONES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <div class="modal fade" id="modalContract" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo Contrato</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form id="formContract">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Cliente</label>
+                                <select class="form-control" name="clientid" required>
+                                    <option value="">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fecha Inicio</label>
+                                        <input type="date" class="form-control" name="start_date" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fecha Fin</label>
+                                        <input type="date" class="form-control" name="end_date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Monto Mensual</label>
+                                <input type="number" step="0.01" class="form-control" name="monthly_amount">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%- include('../resources/includes/footer') %>
+            <script>
+                $(document).ready(function () {
+                    $('#tableContracts').DataTable({
+                        ajax: { url: '/customers/contracts/list', dataSrc: 'data' },
+                        columns: [
+                            { data: 'id' }, { data: 'contract_number', defaultContent: '-' },
+                            { data: null, render: d => d.names ? `${d.names} ${d.surnames}` : '-' },
+                            { data: 'start_date' }, { data: 'end_date', defaultContent: 'Indefinido' },
+                            { data: 'monthly_amount', render: d => d ? `S/ ${d}` : '-' },
+                            {
+                                data: 'status', render: d => {
+                                    const colors = { active: 'success', suspended: 'warning', cancelled: 'danger', expired: 'secondary' };
+                                    return `<span class="badge badge-${colors[d] || 'secondary'}">${d}</span>`;
+                                }
+                            },
+                            {
+                                data: null, render: d => `
+                        <button class="btn btn-info btn-xs"><i class="fa fa-eye"></i></button>
+                        <button class="btn btn-primary btn-xs"><i class="fa fa-print"></i></button>
+                    `}
+                        ],
+                        language: { url: '/public/plugins/datatables/Spanish.json' }
+                    });
+                });
+            </script>

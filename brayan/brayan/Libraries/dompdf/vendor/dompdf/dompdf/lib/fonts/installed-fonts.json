@@ -1,0 +1,9 @@
+{
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_06d27705368c70080c3aa39986dd558e"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampp\\htdocs\\SUPERWISP\\Libraries\\dompdf\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_free_normal_045ef8beffc708002615708371fbe275",
+        "900": "font_awesome_5_free_900_fdb81df57012834ec680b008adf67dea"
+    }
+}

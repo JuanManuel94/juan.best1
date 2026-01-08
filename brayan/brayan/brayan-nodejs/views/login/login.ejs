@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="<%= DEVELOPER %>">
+    <meta name="theme-color" content="#00acac">
+    <% 
+    let favicon = '/public/images/logotypes/favicon.png';
+    if (business && business.favicon) {
+        if (business.favicon === 'favicon.png') {
+            favicon = '/public/images/logotypes/' + business.favicon;
+        } else {
+            favicon = '/public/uploads/business/' + business.favicon;
+        }
+    }
+    %>
+    <link rel="icon" type="image/x-icon" href="<%= favicon %>">
+    <link rel="stylesheet" href="/public/css/default/app.min.css">
+    <link rel="stylesheet" href="/public/css/jquery-confirm.min.css">
+    <link rel="stylesheet" href="/public/bookstores/gritter/css/jquery.gritter.css">
+    <link rel="stylesheet" href="/public/css/login.css">
+    <title><%= page_name %></title>
+</head>
+<body class="pace-top">
+    <div id="loading"><span class="loading-spinner"></span></div>
+    <div class="login-cover">
+        <% 
+        let background = '/public/images/background/bg-1.jpeg';
+        if (business && business.background) {
+            background = '/public/images/background/' + business.background;
+        }
+        %>
+        <div id="particles-js" class="login-cover-image" style="background-image: url(<%= background %>)" data-id="login-cover-image"></div>
+        <div class="login-cover-bg"></div>
+    </div>
+    <div id="page-container" class="fade">
+        <div class="login login-v2" data-pageload-addclass="animated fadeIn">
+            <div class="login-header">
+                <div class="brand" style="display: flex; justify-content: center; align-items: center;">
+                    <% 
+                    let logo = '/public/images/logotypes/superwisp_white.png';
+                    if (business && business.logo_login) {
+                        if (business.logo_login === 'superwisp_white.png') {
+                            logo = '/public/images/logotypes/' + business.logo_login;
+                        } else {
+                            logo = '/public/uploads/business/' + business.logo_login;
+                        }
+                    }
+                    %>
+                    <img src="<%= logo %>" class="img-responsive" style="max-width: 200px; height: auto;">
+                </div>
+            </div>
+            <div class="login-content">
+                <form name="transactions" id="transactions" autocomplete="off" class="margin-bottom-0">
+                    <div class="form-group m-b-20">
+                        <input type="text" class="form-control form-control-lg" placeholder="Usuario" id="username" name="username" value="<%= cookies.username || '' %>">
+                    </div>
+                    <div class="form-group mb-0" style="position: relative;">
+                        <input type="password" class="form-control form-control-lg" placeholder="Contraseña" id="password" name="password" value="<%= cookies.password || '' %>" style="padding-right: 40px;">
+                        <i class="fa fa-eye-slash showHidePw" style="position: absolute; top: 50%; right: -20px; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
+                    <div class="checkbox checkbox-css m-b-20">
+                        <input type="checkbox" id="remember" name="remember" <% if (cookies.username) { %>checked<% } %>>
+                        <label for="remember">Mantener sesion</label>
+                    </div>
+                    <div class="login-buttons">
+                        <button type="submit" class="btn btn-success btn-block btn-lg">INGRESAR</button>
+                    </div>
+                    <div class="m-t-5">
+                        ¿Olvidaste tu contraseña? <a href="javascript:;" onclick="modal();">Haz clic aquí</a>.
+                    </div>
+                    <div class="m-t-10" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>&copy; <%= new Date().getFullYear() %> <%= (business && business.business_name) || 'Sistema' %>. Todos los derechos reservados.</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para recuperar contraseña -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar contraseña</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formReset">
+                        <div class="form-group">
+                            <label>Correo electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo electrónico">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="resetPassword();">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script> const base_url = "<%= base_url %>"; </script>
+    <script src="/public/js/app.min.js"></script>
+    <script src="/public/js/particles.min.js"></script>
+    <script src="/public/js/functions.js"></script>
+    <script src="/public/js/jquery-confirm.min.js"></script>
+    <script src="/public/bookstores/parsleyjs/parsley.js"></script>
+    <script src="/public/bookstores/gritter/js/jquery.gritter.min.js"></script>
+    <script src="/public/js/functions/<%= page_functions_js %>?v=<%= Date.now() %>"></script>
+</body>
+</html>

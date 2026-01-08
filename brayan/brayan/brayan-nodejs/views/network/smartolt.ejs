@@ -1,0 +1,244 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content" style="background: #d9e0e7;">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Gestión de Red</li>
+                            <li class="breadcrumb-item active">SmartOLT</li>
+                        </ol>
+                        <h1 class="page-header">SmartOLT <small>gestión de OLTs y ONUs</small></h1>
+
+                        <!-- Status Cards -->
+                        <div class="mw-stat-cards">
+                            <div class="mw-stat-card green">
+                                <div class="mw-stat-card-title">ESPERANDO AUTORIZACIÓN</div>
+                                <div class="mw-stat-card-value" id="statPending">0</div>
+                                <div class="mw-stat-card-subtitle">GPON: <span id="statGpon">0</span></div>
+                            </div>
+                            <div class="mw-stat-card blue">
+                                <div class="mw-stat-card-title">ONLINE</div>
+                                <div class="mw-stat-card-value" id="statOnline">0</div>
+                                <div class="mw-stat-card-subtitle">Total Autorizados: <span id="statAuthorized">0</span>
+                                </div>
+                            </div>
+                            <div class="mw-stat-card red">
+                                <div class="mw-stat-card-title">TOTAL OFFLINE</div>
+                                <div class="mw-stat-card-value" id="statOffline">0</div>
+                                <div class="mw-stat-card-subtitle">PwrFail: <span id="statPwrFail">0</span> LoS: <span
+                                        id="statLos">0</span> N/A: <span id="statNA">0</span></div>
+                            </div>
+                            <div class="mw-stat-card orange">
+                                <div class="mw-stat-card-title">LOW SIGNALS</div>
+                                <div class="mw-stat-card-value" id="statLowSignal">0</div>
+                                <div class="mw-stat-card-subtitle">Warning: <span id="statWarning">0</span> Critical:
+                                    <span id="statCritical">0</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Panel with Tabs -->
+                        <div class="mw-panel">
+                            <!-- Tabs -->
+                            <div class="mw-tabs">
+                                <button class="mw-tab active" data-tab="onus">ONUS CONFIGURADOS</button>
+                                <button class="mw-tab" data-tab="vlans">VLANS</button>
+                                <button class="mw-tab" data-tab="zonas">Zonas</button>
+                                <button class="mw-tab" data-tab="profiles">PROFILES</button>
+                                <button class="mw-tab" data-tab="odb">ODB</button>
+                                <button class="mw-tab" data-tab="api">API</button>
+                            </div>
+
+                            <div class="mw-panel-body">
+                                <!-- Tab Content: ONUs -->
+                                <div class="tab-content-mw" id="tab-onus">
+                                    <!-- Toolbar -->
+                                    <div class="mw-toolbar">
+                                        <div class="mw-toolbar-left">
+                                            <div class="mw-page-size">
+                                                <select id="pageSize">
+                                                    <option value="15">15</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                                <button class="btn-list"><i class="fa fa-list"></i></button>
+                                            </div>
+                                            <select class="form-control"
+                                                style="width: 150px; height: 34px; font-size: 12px;">
+                                                <option>TODOS</option>
+                                                <option>ONLINE</option>
+                                                <option>OFFLINE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mw-toolbar-right">
+                                            <div class="mw-search">
+                                                <input type="text" id="searchOnu" placeholder="Buscar...">
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Table -->
+                                    <div class="mw-table-container">
+                                        <table class="mw-table" id="tableONUs">
+                                            <thead>
+                                                <tr>
+                                                    <th class="sortable">CLIENTE <i
+                                                            class="fa fa-sort-down sort-icon"></i></th>
+                                                    <th class="sortable">ID CLIENTE <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">SN <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">OLT <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">ESTADO <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">BOARD <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">PORT <i class="fa fa-sort sort-icon"></i></th>
+                                                    <th class="sortable">SIGNAL <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th class="sortable">RX SIGNAL <i class="fa fa-sort sort-icon"></i>
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="onusBody">
+                                                <tr>
+                                                    <td colspan="10" class="text-center"
+                                                        style="padding: 30px; color: #6c757d;">
+                                                        <i class="fa fa-info-circle"></i> Ningún registro disponible
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Pagination -->
+                                        <div class="mw-pagination">
+                                            <span class="mw-pagination-info">Mostrando 0 registros</span>
+                                            <button class="mw-page-btn"><i class="fa fa-chevron-left"></i></button>
+                                            <button class="mw-page-btn"><i class="fa fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Other tab contents (hidden by default) -->
+                                <div class="tab-content-mw" id="tab-vlans" style="display: none;">
+                                    <p class="text-center py-5">Gestión de VLANs</p>
+                                </div>
+                                <div class="tab-content-mw" id="tab-zonas" style="display: none;">
+                                    <p class="text-center py-5">Gestión de Zonas</p>
+                                </div>
+                                <div class="tab-content-mw" id="tab-profiles" style="display: none;">
+                                    <p class="text-center py-5">Perfiles de ONU</p>
+                                </div>
+                                <div class="tab-content-mw" id="tab-odb" style="display: none;">
+                                    <p class="text-center py-5">Base de datos ODB</p>
+                                </div>
+                                <div class="tab-content-mw" id="tab-api" style="display: none;">
+                                    <p class="text-center py-5">Configuración de API</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Icon -->
+                        <div style="position: fixed; right: 20px; bottom: 20px;">
+                            <button class="mw-settings-icon" style="width: 40px; height: 40px;">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                $(document).ready(function () {
+                    loadONUStats();
+                    loadONUs();
+
+                    // Tab switching
+                    $('.mw-tab').on('click', function () {
+                        $('.mw-tab').removeClass('active');
+                        $(this).addClass('active');
+
+                        const tabId = $(this).data('tab');
+                        $('.tab-content-mw').hide();
+                        $('#tab-' + tabId).show();
+                    });
+                });
+
+                function loadONUStats() {
+                    // Simulated stats
+                    $('#statPending').text('0');
+                    $('#statGpon').text('0');
+                    $('#statOnline').text('0');
+                    $('#statAuthorized').text('0');
+                    $('#statOffline').text('0');
+                    $('#statPwrFail').text('0');
+                    $('#statLos').text('0');
+                    $('#statNA').text('0');
+                    $('#statLowSignal').text('0');
+                    $('#statWarning').text('0');
+                    $('#statCritical').text('0');
+                }
+
+                function loadONUs() {
+                    $.get('/network/smartolt/onus/list', function (response) {
+                        const data = response.data || [];
+                        renderONUs(data);
+                    }).fail(function () {
+                        // Show empty state
+                        $('#onusBody').html(`
+                            <tr>
+                                <td colspan="10" class="text-center" style="padding: 30px; color: #6c757d;">
+                                    <i class="fa fa-info-circle"></i> Ningún registro disponible
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                function renderONUs(data) {
+                    const tbody = $('#onusBody');
+                    tbody.empty();
+
+                    if (data.length === 0) {
+                        tbody.html(`
+                            <tr>
+                                <td colspan="10" class="text-center" style="padding: 30px; color: #6c757d;">
+                                    <i class="fa fa-info-circle"></i> Ningún registro disponible
+                                </td>
+                            </tr>
+                        `);
+                        return;
+                    }
+
+                    data.forEach(onu => {
+                        const statusBadge = onu.status === 'online'
+                            ? '<span class="mw-badge mw-badge-success">ONLINE</span>'
+                            : '<span class="mw-badge mw-badge-danger">OFFLINE</span>';
+
+                        tbody.append(`
+                            <tr>
+                                <td>${onu.client_name || '-'}</td>
+                                <td>${onu.clientid || '-'}</td>
+                                <td>${onu.onu_serial || '-'}</td>
+                                <td>${onu.olt_name || '-'}</td>
+                                <td>${statusBadge}</td>
+                                <td>${onu.board || '-'}</td>
+                                <td>${onu.port || '-'}</td>
+                                <td>${onu.signal || '-'}</td>
+                                <td>${onu.rx_signal || '-'}</td>
+                                <td>
+                                    <div class="mw-actions">
+                                        <button class="mw-btn-action view" title="Ver detalles">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+            </script>

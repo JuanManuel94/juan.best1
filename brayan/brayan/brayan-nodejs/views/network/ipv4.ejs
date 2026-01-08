@@ -1,0 +1,344 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content" style="background: #d9e0e7;">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item">Gestión de Red</li>
+                            <li class="breadcrumb-item active">Redes IPv4</li>
+                        </ol>
+                        <h1 class="page-header">Redes IPv4 <small>gestión de subredes y pools de direcciones</small>
+                        </h1>
+
+                        <!-- Panel MikroWISP Style -->
+                        <div class="mw-panel">
+                            <div class="mw-panel-header">
+                                <h4 class="mw-panel-title">Redes IPv4</h4>
+                                <div class="mw-panel-controls">
+                                    <button class="btn-control btn-add" data-toggle="modal" data-target="#modalNetwork"
+                                        title="Agregar">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button class="btn-control btn-refresh" onclick="reloadNetworks()"
+                                        title="Refrescar">
+                                        <i class="fa fa-sync"></i>
+                                    </button>
+                                    <button class="btn-control btn-minimize" title="Minimizar">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mw-panel-body">
+                                <!-- Toolbar -->
+                                <div class="mw-toolbar">
+                                    <div class="mw-toolbar-left">
+                                        <div class="mw-page-size">
+                                            <select id="pageSize">
+                                                <option value="15">15</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                            <button class="btn-list"><i class="fa fa-list"></i></button>
+                                        </div>
+                                        <button class="mw-btn-new" data-toggle="modal" data-target="#modalNetwork">
+                                            <i class="fa fa-plus"></i> Nuevo
+                                        </button>
+                                    </div>
+                                    <div class="mw-toolbar-right">
+                                        <div class="mw-search">
+                                            <input type="text" id="searchNetwork" placeholder="Buscar..."
+                                                onkeyup="searchNetworks()">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Table -->
+                                <div class="mw-table-container">
+                                    <table class="mw-table" id="tableNetworks">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%" class="sortable">ID <i class="fa fa-sort sort-icon"></i>
+                                                </th>
+                                                <th class="sortable">NOMBRE <i class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable">RED <i class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable" width="15%">USO IPS <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable text-center">CIDR <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable">ROUTER <i class="fa fa-sort sort-icon"></i></th>
+                                                <th class="sortable text-center">TIPO <i
+                                                        class="fa fa-sort sort-icon"></i></th>
+                                                <th width="10%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="networksBody">
+                                            <!-- Data will be loaded via JavaScript -->
+                                        </tbody>
+                                    </table>
+
+                                    <!-- Pagination -->
+                                    <div class="mw-pagination">
+                                        <span class="mw-pagination-info">
+                                            Mostrando de <a href="#">1</a> al <a href="#">10</a> de un total de <span
+                                                id="totalNetworks">0</span>
+                                        </span>
+                                        <button class="mw-page-btn"><i class="fa fa-chevron-left"></i></button>
+                                        <button class="mw-page-btn active">1</button>
+                                        <button class="mw-page-btn"><i class="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Icon -->
+                        <div style="position: fixed; right: 20px; bottom: 20px;">
+                            <button class="mw-settings-icon" style="width: 40px; height: 40px;">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+        </div>
+
+        <!-- Modal Nueva Red -->
+        <div class="modal fade" id="modalNetwork" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Nueva Red IPv4</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form id="formNetwork">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="network_id">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" name="description" id="description"
+                                            placeholder="Nombre descriptivo de la red">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Red (CIDR)</label>
+                                        <input type="text" class="form-control" name="network" id="network"
+                                            placeholder="192.168.1.0/24" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Gateway</label>
+                                        <input type="text" class="form-control" name="gateway" id="gateway"
+                                            placeholder="192.168.1.1">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>DNS Primario</label>
+                                        <input type="text" class="form-control" name="dns_primary" id="dns_primary"
+                                            placeholder="8.8.8.8">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>DNS Secundario</label>
+                                        <input type="text" class="form-control" name="dns_secondary" id="dns_secondary"
+                                            placeholder="8.8.4.4">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Router</label>
+                                        <select class="form-control" name="routerid" id="routerid">
+                                            <option value="">-- Seleccionar --</option>
+                                            <% if (typeof routers !=='undefined' ) { %>
+                                                <% routers.forEach(r=> { %>
+                                                    <option value="<%= r.id %>">
+                                                        <%= r.name %>
+                                                    </option>
+                                                    <% }); %>
+                                                        <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nombre del Pool</label>
+                                        <input type="text" class="form-control" name="pool_name" id="pool_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Total IPs</label>
+                                        <input type="number" class="form-control" name="total_ips" id="total_ips"
+                                            value="254">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>IPs Usadas</label>
+                                        <input type="number" class="form-control" name="used_ips" id="used_ips"
+                                            value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <script>
+                let networksData = [];
+
+                $(document).ready(function () {
+                    loadNetworks();
+                });
+
+                function loadNetworks() {
+                    $.get('/network/ipv4/list', function (response) {
+                        networksData = response.data || [];
+                        renderNetworks(networksData);
+                    }).fail(function () {
+                        // Demo data
+                        networksData = [
+                            { id: 1, description: 'Red Clientes LAN 1 HIDALGO', network: '192.168.0.0', total_ips: 254, used_ips: 18, cidr: 24, router_name: 'Router Principal', type: 'static' },
+                            { id: 2, description: 'Red Clientes LAN 2', network: '192.168.33.0', total_ips: 254, used_ips: 18, cidr: 24, router_name: 'Router Demo', type: 'static' },
+                            { id: 3, description: 'Red clientes LAN 3', network: '192.168.5.0', total_ips: 254, used_ips: 14, cidr: 24, router_name: 'Router Demo', type: 'static' },
+                            { id: 4, description: 'Red Principal', network: '192.168.1.0', total_ips: 254, used_ips: 15, cidr: 24, router_name: 'Router Principal', type: 'static' },
+                            { id: 6, description: 'Core Cv Hotspot', network: '192.168.150.0', total_ips: 254, used_ips: 1, cidr: 24, router_name: 'Router Principal', type: 'static' },
+                            { id: 8, description: 'Test', network: '172.84.140.32', total_ips: 30, used_ips: 5, cidr: 27, router_name: 'Router Principal', type: 'static' },
+                            { id: 9, description: 'Ttttttt', network: '172.16.56.5', total_ips: 2, used_ips: 2, cidr: 30, router_name: 'Router Principal', type: 'static' }
+                        ];
+                        renderNetworks(networksData);
+                    });
+                }
+
+                function renderNetworks(data) {
+                    const tbody = $('#networksBody');
+                    tbody.empty();
+
+                    data.forEach(net => {
+                        const percent = net.total_ips ? Math.round((net.used_ips / net.total_ips) * 100) : 0;
+                        let progressColor = 'green';
+                        if (percent >= 100) progressColor = 'green'; // Full is green in demo
+                        else if (percent >= 50) progressColor = 'yellow';
+                        else if (percent >= 25) progressColor = 'orange';
+                        else progressColor = 'green';
+
+                        const progressBar = `
+                            <div class="mw-progress">
+                                <div class="mw-progress-bar ${progressColor}" style="width: ${percent}%">${percent}% (${net.used_ips} de ${net.total_ips})</div>
+                            </div>
+                        `;
+
+                        tbody.append(`
+                            <tr>
+                                <td>${net.id}</td>
+                                <td>${net.description || net.network}</td>
+                                <td>${net.network}</td>
+                                <td>${progressBar}</td>
+                                <td class="text-center">${net.cidr || 24}</td>
+                                <td>${net.router_name || '-'}</td>
+                                <td class="text-center">
+                                    <span class="mw-badge mw-badge-estatico">ESTÁTICO</span>
+                                </td>
+                                <td>
+                                    <div class="mw-actions">
+                                        <button class="mw-btn-action edit" onclick="editNetwork(${net.id})" title="Editar">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="mw-btn-action view" title="Ver IPs">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                        <button class="mw-btn-action users" title="Clientes">
+                                            <i class="fa fa-users"></i>
+                                        </button>
+                                        <button class="mw-btn-action delete" onclick="deleteNetwork(${net.id})" title="Eliminar">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+
+                    $('#totalNetworks').text(data.length);
+                }
+
+                function reloadNetworks() {
+                    toastr.info('Actualizando lista de redes...');
+                    loadNetworks();
+                    setTimeout(() => toastr.success('Lista actualizada'), 1000);
+                }
+
+                function searchNetworks() {
+                    const term = $('#searchNetwork').val().toLowerCase();
+                    const filtered = networksData.filter(n =>
+                        (n.description || '').toLowerCase().includes(term) ||
+                        n.network.includes(term)
+                    );
+                    renderNetworks(filtered);
+                }
+
+                function editNetwork(id) {
+                    $.get('/network/ipv4/select/' + id, function (data) {
+                        $('#network_id').val(data.id);
+                        $('#network').val(data.network);
+                        $('#gateway').val(data.gateway);
+                        $('#dns_primary').val(data.dns_primary);
+                        $('#dns_secondary').val(data.dns_secondary);
+                        $('#routerid').val(data.routerid);
+                        $('#pool_name').val(data.pool_name);
+                        $('#total_ips').val(data.total_ips);
+                        $('#used_ips').val(data.used_ips);
+                        $('#description').val(data.description);
+                        $('#modalNetwork').modal('show');
+                    });
+                }
+
+                function deleteNetwork(id) {
+                    if (confirm('¿Está seguro de eliminar esta red?')) {
+                        $.post('/network/ipv4/delete', { id: id }, function (res) {
+                            if (res.success) {
+                                loadNetworks();
+                                toastr.success(res.message || 'Red eliminada');
+                            } else {
+                                toastr.error(res.message || 'Error al eliminar');
+                            }
+                        });
+                    }
+                }
+
+                $('#formNetwork').on('submit', function (e) {
+                    e.preventDefault();
+                    const id = $('#network_id').val();
+                    const url = id ? '/network/ipv4/update' : '/network/ipv4/create';
+                    $.post(url, $(this).serialize(), function (res) {
+                        if (res.success) {
+                            $('#modalNetwork').modal('hide');
+                            loadNetworks();
+                            toastr.success(res.message || 'Red guardada');
+                        } else {
+                            toastr.error(res.message || 'Error al guardar');
+                        }
+                    });
+                });
+            </script>

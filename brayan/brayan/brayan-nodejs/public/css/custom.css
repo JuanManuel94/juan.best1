@@ -1,0 +1,93 @@
+.napport {
+  display: block;
+  width: 23px;
+  text-align: center;
+  float: left;
+  margin-right: 4px;
+  border-radius: 4px;
+  background: #02b997;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  height: 22px;
+  line-height: 22px;
+  margin-bottom: 3px;
+}
+
+.napport.red {
+  background: #f44336;
+  color: #fff !important;
+}
+
+.wsp_contacts {
+  height: 700px;
+  overflow: auto;
+}
+
+.wsp_content {
+  max-width: 100% !important;
+  height: 40px;
+  border: 0px;
+}
+
+.wsp_content:focus {
+  border: none;
+  outline: none;
+}
+
+.wsp_control {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 !important;
+}
+
+.wsp_control_file {
+  border-top: 1px solid #cfd8dc;
+  margin-bottom: 0px;
+  background-color: #eceff1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
+
+.wsp_control_send {
+  border: 0px;
+  background: #00695c;
+  color: #fff;
+  width: 60px;
+  height: 100%;
+}
+
+#text-result2 {
+  color: green;
+  font-weight: bold;
+}
+#text-result3 {
+  color: violet;
+  font-weight: bold;
+}
+#text-deuda {
+  color: red;
+  font-weight: bold;
+}
+#text-result4 {
+  color: orange;
+  font-weight: bold;
+}
+  .resultados-container {
+    display: flex;
+    gap: 100px; 
+  }
+  @media (max-width: 767px) {
+    .resultados-container {
+      gap: 10px; 
+    }
+  }
+
+.imagen-wsp {
+  width: 50px;
+}

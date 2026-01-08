@@ -1,0 +1,280 @@
+<%- include('../resources/includes/head') %>
+
+    <body>
+        <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+            <%- include('../resources/includes/header') %>
+                <%- include('../resources/includes/sidebar') %>
+
+                    <div id="content" class="content">
+                        <ol class="breadcrumb float-xl-right">
+                            <li class="breadcrumb-item"><a href="/dashboard">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:;">Finanzas</a></li>
+                            <li class="breadcrumb-item active">Registrar Pago</li>
+                        </ol>
+                        <h1 class="page-header">Registrar Pago <small>cobro rápido</small></h1>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="panel panel-inverse">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><i class="fa fa-user mr-2"></i>Buscar Cliente</h4>
+                                        <div class="panel-heading-btn">
+                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                                                data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label><i class="fa fa-search text-muted mr-1"></i> Buscar por nombre,
+                                                documento o código</label>
+                                            <select id="selectClient" class="form-control select2" style="width: 100%">
+                                                <option value="">Seleccione un cliente...</option>
+                                            </select>
+                                        </div>
+
+                                        <div id="clientInfo" class="d-none">
+                                            <hr>
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                                        style="width: 50px; height: 50px;">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <h5 class="mb-1"><span id="clientName"></span></h5>
+                                                    <p class="mb-1 text-muted"><i class="fa fa-id-card mr-1"></i> Doc:
+                                                        <span id="clientDoc"></span></p>
+                                                    <p class="mb-1 text-muted"><i class="fa fa-phone mr-1"></i> Tel:
+                                                        <span id="clientPhone"></span></p>
+                                                    <p class="mb-0 text-muted"><i class="fa fa-envelope mr-1"></i> <span
+                                                            id="clientEmail"></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="panel panel-inverse">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><i class="fa fa-file-invoice-dollar mr-2"></i>Deudas
+                                            Pendientes</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="noBills" class="text-center text-muted py-4">
+                                            <i class="fa fa-info-circle fa-3x mb-3 text-primary"></i>
+                                            <p class="mb-0">Seleccione un cliente para ver sus deudas</p>
+                                        </div>
+                                        <div id="billsList" class="d-none">
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-bordered table-hover">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>FACTURA</th>
+                                                            <th>VENCIMIENTO</th>
+                                                            <th>MONTO</th>
+                                                            <th>PENDIENTE</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="billsTableBody"></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="text-right mt-2">
+                                                <strong>Total Deuda: <span id="totalDebt" class="text-danger">S/
+                                                        0.00</span></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="panel panel-inverse">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><i class="fa fa-money-bill-wave mr-2"></i>Datos del Pago
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form id="formPayment">
+                                            <input type="hidden" name="clientid" id="paymentClientId">
+                                            <input type="hidden" name="billid" id="paymentBillId">
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label><i class="fa fa-dollar-sign text-muted mr-1"></i> Monto a
+                                                            Pagar *</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span
+                                                                    class="input-group-text bg-success text-white">S/</span>
+                                                            </div>
+                                                            <input type="number" name="amount" id="paymentAmount"
+                                                                class="form-control form-control-lg" step="0.01"
+                                                                required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label><i class="fa fa-credit-card text-muted mr-1"></i> Método
+                                                            de Pago *</label>
+                                                        <select name="payment_method" class="form-control" required>
+                                                            <option value="cash">Efectivo</option>
+                                                            <option value="transfer">Transferencia</option>
+                                                            <option value="card">Tarjeta</option>
+                                                            <option value="yape">Yape</option>
+                                                            <option value="plin">Plin</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label><i class="fa fa-comment text-muted mr-1"></i>
+                                                            Observaciones</label>
+                                                        <input type="text" name="description" class="form-control"
+                                                            placeholder="Opcional">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                                                            <i class="fa fa-check"></i> Registrar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+        <%- include('../resources/includes/footer') %>
+
+            <style>
+                .thead-dark th {
+                    background-color: #2d353c;
+                    color: #fff;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-size: 11px;
+                }
+
+                .form-control-lg {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                }
+            </style>
+
+            <script>
+                $(document).ready(function () {
+                    // Initialize Select2 for client search
+                    $('#selectClient').select2({
+                        ajax: {
+                            url: '/customers/list',
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) { return { search: params.term }; },
+                            processResults: function (data) {
+                                return {
+                                    results: data.data.map(function (item) {
+                                        return { id: item.id, text: item.names + ' ' + item.surnames + ' - ' + item.document };
+                                    })
+                                };
+                            }
+                        },
+                        placeholder: 'Buscar cliente...',
+                        minimumInputLength: 2
+                    });
+
+                    // On client select
+                    $('#selectClient').on('change', function () {
+                        var clientId = $(this).val();
+                        if (!clientId) {
+                            $('#clientInfo').addClass('d-none');
+                            $('#noBills').removeClass('d-none');
+                            $('#billsList').addClass('d-none');
+                            return;
+                        }
+
+                        // Get client info
+                        $.get('/customers/select/' + clientId, function (res) {
+                            if (res.success) {
+                                var client = res.data;
+                                $('#clientName').text(client.names + ' ' + client.surnames);
+                                $('#clientDoc').text(client.document);
+                                $('#clientPhone').text(client.mobile || '-');
+                                $('#clientEmail').text(client.email || '-');
+                                $('#clientInfo').removeClass('d-none');
+                                $('#paymentClientId').val(clientId);
+                            }
+                        });
+
+                        // Get pending bills
+                        $.get('/finance/payment/bills/' + clientId, function (res) {
+                            if (res.data && res.data.length > 0) {
+                                $('#noBills').addClass('d-none');
+                                var html = '';
+                                var total = 0;
+                                res.data.forEach(function (bill) {
+                                    total += parseFloat(bill.pending_amount);
+                                    html += '<tr>' +
+                                        '<td>' + bill.invoice_number + '</td>' +
+                                        '<td>' + new Date(bill.due_date).toLocaleDateString('es-PE') + '</td>' +
+                                        '<td>S/ ' + parseFloat(bill.total).toFixed(2) + '</td>' +
+                                        '<td class="text-danger font-weight-bold">S/ ' + parseFloat(bill.pending_amount).toFixed(2) + '</td>' +
+                                        '<td><button type="button" class="btn btn-sm btn-primary btn-select-bill" data-id="' + bill.id + '" data-amount="' + bill.pending_amount + '"><i class="fa fa-check"></i></button></td>' +
+                                        '</tr>';
+                                });
+                                $('#billsTableBody').html(html);
+                                $('#totalDebt').text('S/ ' + total.toFixed(2));
+                                $('#billsList').removeClass('d-none');
+                            } else {
+                                $('#noBills').removeClass('d-none').find('p').text('Este cliente no tiene deudas pendientes');
+                                $('#billsList').addClass('d-none');
+                            }
+                        });
+                    });
+
+                    // Select bill to pay
+                    $(document).on('click', '.btn-select-bill', function () {
+                        var billId = $(this).data('id');
+                        var amount = $(this).data('amount');
+                        $('#paymentBillId').val(billId);
+                        $('#paymentAmount').val(amount);
+                        $('.btn-select-bill').removeClass('btn-success').addClass('btn-primary');
+                        $(this).removeClass('btn-primary').addClass('btn-success');
+                    });
+
+                    // Submit payment
+                    $('#formPayment').submit(function (e) {
+                        e.preventDefault();
+                        if (!$('#paymentClientId').val()) {
+                            $.gritter.add({ title: 'Error', text: 'Seleccione un cliente', class_name: 'gritter-error' });
+                            return;
+                        }
+                        $.post('/finance/payment/register', $(this).serialize(), function (res) {
+                            if (res.success) {
+                                $.gritter.add({ title: 'Éxito', text: res.message, class_name: 'gritter-success' });
+                                // Reset form
+                                $('#formPayment')[0].reset();
+                                $('#selectClient').val('').trigger('change');
+                                $('#clientInfo').addClass('d-none');
+                                $('#noBills').removeClass('d-none');
+                                $('#billsList').addClass('d-none');
+                            } else {
+                                $.gritter.add({ title: 'Error', text: res.message, class_name: 'gritter-error' });
+                            }
+                        });
+                    });
+                });
+            </script>
